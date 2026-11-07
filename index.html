@@ -52,12 +52,16 @@ body.light .site-header{background:#dedbd6;color:#252423}body.light .products-me
 
 <style>
 /* The brand signature is the ordered stream becoming a shared system. */
-body.intro-active .floating-copy,
+body.intro-active .floating-copy:not(.hero-copy),
 body.intro-active .blueprint-labels,
 body.intro-active .side-panel,
 body.intro-active .timeline-widget,
 body.intro-active .scroll-cue,
 body.intro-active #model-caption{visibility:hidden!important}
+body.intro-active .hero-copy{visibility:visible!important;opacity:var(--arrival-copy,0)!important}
+body.intro-active .hero-copy h1 span{opacity:1!important;transform:none!important}
+body.intro-active .hero-copy p{opacity:var(--arrival-description,0)!important;transform:none!important}
+body.intro-active .hero-actions{opacity:var(--arrival-actions,0)!important;transform:none!important;pointer-events:none}
 .brand-arrival{position:fixed;inset:0;z-index:22;pointer-events:none;overflow:hidden}
 .arrival-core{position:absolute;left:50%;top:50%;translate:-50% -50%;display:flex;align-items:center;flex-direction:column;opacity:0;color:#f6f4f2;will-change:opacity,transform}
 .arrival-core img{width:62px;height:52px;object-fit:contain;margin-bottom:21px}
@@ -81,7 +85,7 @@ body.intro-active #model-caption{visibility:hidden!important}
 .motion-review:not(.intro-active) .hero-actions{opacity:1!important;transform:none!important}
 .edition{color:#aaa6a1;border-color:#ffffff20}
 @media(max-width:700px){
- .arrival-core{top:49%}.arrival-core img{width:45px;height:40px;margin-bottom:16px}
+ .arrival-core{top:55%}.arrival-core img{width:45px;height:40px;margin-bottom:16px}
  .arrival-wordmark{font-size:25px}.arrival-core p{font-size:8px;letter-spacing:.02em;margin-top:14px}
  .arrival-legend{gap:12px;bottom:72px;display:grid;grid-template-columns:repeat(3,auto);row-gap:13px}
  .arrival-legend span{font-size:8px;gap:5px}.arrival-phase{bottom:128px;font-size:8px}
@@ -805,8 +809,10 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   const sheetVector=new T.Vector3();let sheetLast='';
   function sheetProject(g,x=0,y=0,z=0){sheetVector.set(x,y,z);g.localToWorld(sheetVector);sheetVector.project(camera);return {x:(sheetVector.x+1)*width/2,y:(1-sheetVector.y)*height/2};}
   function renderEngineering(){
-    const p=state.progress,enter=smooth((p-4580)/420),leave=1-smooth((p-5660)/340);
+    const p=state.progress,enter=smooth((p-4850)/220),leave=1-smooth((p-5740)/110);
     engineeringHost.style.opacity=enter*leave*state.light;
+    sheetDims.style.opacity=sheetIndex.style.opacity=smooth((p-5100)/220);
+    sheetDetail.style.opacity=smooth((p-5250)/220);
     if(p<4400||p>6050)return;
     const cache=[Math.round(p),width,height].join(':');if(cache===sheetLast)return;sheetLast=cache;
     engineeringSVG.setAttribute('viewBox',`0 0 ${width} ${height}`);
@@ -871,7 +877,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     root.scale.setScalar((isMobile?(.62-state.gpus*.1*(1-state.core)):1)*(1-flatten*.24)*(1+focus*(isMobile?.025:.1)));
     if(flatten>0){root.position.x=lerp(root.position.x,width>=1200?.6:0,flatten);root.position.y=lerp(root.position.y,-.9,flatten);if(width>=700&&width<1200)root.scale.multiplyScalar(1-flatten*.18);}
     if(isMobile)root.position.y-=state.core*.8;
-    if(!arrival.completed)root.position.set(lerp(0,centerX,arrival.pose),lerp(0,isMobile?-1.75:0,arrival.pose),0);
+    if(!arrival.completed)root.position.set(lerp(0,centerX,arrival.pose),lerp(isMobile?-1.1:0,isMobile?-1.75:0,arrival.pose),0);
     const targetDistance=isMobile?17.7:17;
     camera.position.z=targetDistance+state.racks*.6-state.gpus*.8+flatten*.2-featurePhase*.7-focus*(isMobile?.1:.5);
     // Side panels split from the enclosure instead of disappearing in a cut.
@@ -946,6 +952,12 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   let arrivalPhase=-1;
   function updateArrival(){
     const time=startup?startup.currentTime:0;
+    const reveal=(start,duration)=>{const x=Math.max(0,Math.min(1,(time-start)/duration));return 1-Math.pow(1-x,3);};
+    const compact=innerWidth<=700&&innerHeight<=620;
+    document.body.style.setProperty('--arrival-copy',reveal(650,650));
+    document.body.style.setProperty('--arrival-description',reveal(compact?5350:1250,600));
+    document.body.style.setProperty('--arrival-actions',reveal(5350,550));
+    document.querySelector('.hero-actions').inert=time<5900;
     const phase=time<2350?0:time<3650?1:2;
     if(phase!==arrivalPhase){arrivalPhase=phase;arrivalLabel.textContent=['01 — CONNECT','02 — WEAVE','03 — OPERATE'][phase];}
     const progress=document.querySelector('.arrival-progress span');
@@ -954,13 +966,15 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   }
   function finishArrival(reveal=true){
     if(arrival.completed)return;
+    const copyAlreadyVisible=Number(document.body.style.getPropertyValue('--arrival-copy'))>.95;
     arrival.completed=true;startup?.pause();
     carriers.forEach(c=>{c.dock=1;});
     arrival.pose=1;arrival.structure=1;arrival.shell=1;arrival.trace=0;
     arrivalOverlay.hidden=true;document.body.classList.remove('intro-active');
+    document.querySelector('.hero-actions').inert=false;
     arrivalControl.innerHTML='<span aria-hidden="true">↺</span> 진입 모션 다시 보기';
     arrivalControl.setAttribute('aria-label','진입 모션 다시 보기');
-    if(reveal&&!reduced){
+    if(reveal&&!reduced&&!copyAlreadyVisible){
       anime.animate('.hero-copy h1 span',{opacity:[0,1],y:[24,0],delay:anime.stagger(90),duration:650,ease:'out(3)'});
       anime.animate('.hero-copy p,.hero-actions',{opacity:[0,1],y:[12,0],delay:anime.stagger(90,{start:200}),duration:500,ease:'out(3)'});
     }
@@ -971,6 +985,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     arrival.completed=false;arrival.rotation=0;arrival.pose=0;arrival.structure=0;arrival.shell=0;arrival.trace=0;arrivalPhase=-1;
     carriers.forEach((c,i)=>{c.distance=-i*.075;c.dock=0;});
     arrivalOverlay.hidden=false;document.body.classList.add('intro-active');
+    for(const key of ['copy','description','actions'])document.body.style.setProperty('--arrival-'+key,0);
     arrivalControl.hidden=false;arrivalControl.innerHTML='건너뛰기 <span aria-hidden="true">↗</span>';
     arrivalControl.setAttribute('aria-label','진입 모션 건너뛰기');
     startup=anime.createTimeline({autoplay:false,defaults:{ease:'inOut(3)'},onUpdate:updateArrival,onComplete:()=>finishArrival()})
@@ -1246,12 +1261,17 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
       const stage=t<2300?0:t<3400?1:2,start=[950,2300,3400][stage],end=[2300,3400,4500][stage];
       alpha=smooth((t-start)/130)*(1-smooth((t-end+130)/130));
     }
-    if(zone==='blueprint')alpha=smooth((t-4500)/150)*(1-smooth((t-5800)/200));
-    if(zone==='business'){const start=chapterStarts[next]||6000,end=chapterStarts[next+1]||14600;alpha=smooth((t-start)/130)*(1-smooth((t-end+130)/130));}
+    // Paper reaches its light value before dark ink enters; reverse scroll is symmetric.
+    if(zone==='blueprint')alpha=smooth((t-4850)/150)*(1-smooth((t-5750)/100))*smooth((state.light-.88)/.1);
+    // Label the geometry that is actually on screen, with a quiet gap during the morph.
+    if(zone==='business')alpha=(1-smooth((Math.abs(state.feature-next)-.04)/.30))*(1-smooth((t-14440)/160));
     if(zone==='core')alpha=smooth((t-14600)/160);
     for(const key of ['hero','journey','blueprint','business','core']){
       const el=groups[key],a=key===zone?alpha:0;el.style.opacity=a;el.inert=a<.03;el.setAttribute('aria-hidden',String(a<.03));
     }
+    const panelAlpha=zone==='business'?alpha:0;
+    panel.style.opacity=panelAlpha;panel.inert=panelAlpha<.03;panel.setAttribute('aria-hidden',String(panelAlpha<.03));
+    mobileConsole.style.opacity=panelAlpha;mobileConsole.inert=panelAlpha<.03;mobileConsole.setAttribute('aria-hidden',String(panelAlpha<.03));
     updateMobileStory(t,zone,next);
   }
 
@@ -1371,7 +1391,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     businessCopy.innerHTML=`<span class="eyebrow mono">${p.tag}</span><div class="product-heading">${symbol(p)}<h2>${p.name}</h2></div><p>${p.description}</p><ul class="product-links">${p.links.map((x,j)=>`<li><a href="product-${p.id}.html#feature-${j+1}"><span class="arrow">→</span>${x}</a></li>`).join('')}</ul>`;
     panel.innerHTML=panelContent(p);panel.hidden=false;widget.hidden=false;
     dockBusiness(i);productSignature(p);if(p.id==='fractos')setupAllocation();setMobileProduct(p,i);
-    animate(businessCopy,{y:[12,0],duration:350,ease:'out(3)'});animate(panel,{opacity:[0,1],y:[12,0],duration:350,ease:'out(3)'});
+    animate(businessCopy,{y:[12,0],duration:350,ease:'out(3)'});animate(panel,{y:[12,0],duration:350,ease:'out(3)'});
     animate('.product-links li',{opacity:[0,1],x:[-8,0],delay:stagger(100,{start:150}),duration:250,ease:'out(3)'});
     if(p.id==='fabrix'){const path=$('.health-spark path');animate(svg.createDrawable(path),{draw:['0 0','0 1'],duration:900,ease:'inOut(2)'});}
     $('.timeline-counter').textContent=p.kind==='service'?'전 주기 서비스':`0${i} / 05`;
@@ -1402,7 +1422,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   function update(){
     const t=playhead.time;state.progress=t;updateBlueprint(t);
     let zone=t<950?'hero':t<4500?'journey':t<6000?'blueprint':t<14600?'business':'core';
-    const next=t>=6000&&t<14600?chapterStarts.reduce((result,start,i)=>t>=start?i:result,-1):-1;
+    const next=t>=6000&&t<14600?Math.max(0,Math.min(5,Math.round(state.feature))):-1;
     if(zone!==lastZone){
       for(const [key,el]of Object.entries(groups)){const show=key===zone||(zone==='blueprint'&&key==='labels');setVisible(el,show);el.style.opacity=show?1:0;}
       animate('.scroll-cue',{opacity:zone==='hero'?1:0,duration:250});lastZone=zone;
@@ -1434,8 +1454,8 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     .add(state,{servers:1,duration:900},2600)
     .add(state,{gpus:1,duration:1400},3300)
     .add(state,{flat:1,duration:900},4400)
-    .add(state,{light:1,duration:700,ease:'inOutQuad'},4450)
-    .add(state,{light:0,duration:600,ease:'inOutQuad'},5650)
+    .add(state,{light:1,duration:450,ease:'inOutQuad'},4400)
+    .add(state,{light:0,duration:400,ease:'inOutQuad'},5850)
     .add(state,{feature:0,duration:500},6000)
     .add(state,{feature:1,duration:500},7400)
     .add(state,{feature:2,duration:500},8800)
