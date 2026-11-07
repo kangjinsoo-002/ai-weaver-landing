@@ -416,7 +416,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
 <aside class="side-panel" id="side-panel" aria-label="사업별 기능 미리보기" hidden></aside>
 <div class="timeline-widget" id="timeline-widget" hidden><button id="previous-chapter" aria-label="이전 사업">‹</button><div class="timeline-track" aria-hidden="true"><i></i><span></span></div><button id="next-chapter" aria-label="다음 사업">›</button><span class="timeline-counter mono">01 / 05</span></div>
 <div class="scroll-cue mono"><span>스크롤하여 살펴보기</span><i aria-hidden="true">↓</i></div>
-<div class="chapter-anchors" aria-hidden="true"><div id="top" data-time="0"></div><div id="architecture" data-time="1700"></div><div id="blueprint" data-time="5000"></div><div id="fractos" data-time="8150"></div><div id="fabrix" data-time="9550"></div><div id="stratos" data-time="10950"></div><div id="agentic" data-time="12350"></div><div id="security" data-time="13850"></div><div id="orbis" data-time="6750"></div><div id="core" data-time="15300"></div></div>
+<div class="chapter-anchors" aria-hidden="true"><div id="top" data-time="0"></div><div id="architecture" data-time="1700"></div><div id="blueprint" data-time="5000"></div><div id="fractos" data-time="8550"></div><div id="fabrix" data-time="9950"></div><div id="stratos" data-time="11350"></div><div id="agentic" data-time="12750"></div><div id="security" data-time="14250"></div><div id="orbis" data-time="7150"></div><div id="core" data-time="15300"></div></div>
 <div class="core-copy floating-copy" aria-hidden="true"><div class="eyebrow mono">제품군이 함께 쓰는 기반</div><h2>서로 다른 제품,<br>하나의 WEAVER.</h2><p>제품별 경험은 명확하게.<br>조직·권한·정책·이력은 하나의 코어로.</p><a class="button primary" href="#connections">연결 구조 살펴보기 <span class="arrow">↓</span></a></div>
 </div>
 </div>
@@ -676,6 +676,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   state.assignmentMask=15;state.assignedCount=4;state.operationProgress=0;
   state.assignmentBlend=Array.from({length:8},(_,i)=>({value:i<4?1:0}));
   gpus.forEach(o=>{
+    o.technicalMaterials=[];o.technical.traverse(m=>{if(m.material)o.technicalMaterials.push({material:m.material,opacity:m===o.technical.children[0]?1:.78});});
     const copies=new Map();o.materials=[];
     o.solid.traverse(m=>{if(!m.material)return;const original=m.material;
       if(!copies.has(original)){const copy=original.clone();copy.transparent=true;copies.set(original,copy);o.materials.push({material:copy,opacity:original.opacity});}
@@ -711,7 +712,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     const amount=blueprintAmount(o.id),resourceWeight=smooth((state.feature-.7)/.3)*(1-smooth((state.feature-1)/.6))*(1-state.core);
     o.solid.visible=amount<.999;o.technical.visible=amount>.001;
     o.materials.forEach(({material,opacity})=>{material.opacity=opacity*(1-amount)*(o.id>=8?lerp(1,.38,resourceWeight):1);material.depthWrite=amount<.1;});
-    o.technical.traverse(m=>{if(m.material)m.material.opacity=amount*(m===o.technical.children[0]?1:.78);});
+    o.technicalMaterials.forEach(({material,opacity})=>{material.opacity=amount*opacity;});
     if(resourceWeight>.001){
       const selection=o.id<8?state.assignmentBlend[o.id].value:0;
       o.brandEdge.material.color.lerp(o.id<8?resourceRed:resourceNeutral,resourceWeight);
@@ -775,6 +776,14 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     racks.forEach(({g})=>{if(g.visible)include(g.position.x,g.position.y,g.position.z,g.scale.x,2.3*g.scale.x,g.scale.x);});
     if(enclosure.visible)shell.forEach(({g})=>{const mesh=g.children[0];include(g.position.x,g.position.y,g.position.z,mesh.scale.x*.56,mesh.scale.y*.56,mesh.scale.z*.56);});
     if(shield.visible)include(0,0,0,3.7,2.65,1.6);
+    // Fit an authored, continuous envelope, rather than chasing parts appearing/disappearing.
+    const envelopes=[[3.45,2.5,1.4],[3.55,2.5,1.75],[3.95,2.5,2.8],[3.3,3.2,1],[3.05,2.45,1.5],[3.8,2.85,1.6]];
+    const feature=clamp(state.feature,0,5),from=Math.floor(feature),to=Math.ceil(feature),mix=smooth(feature-from);
+    const weight=smooth(state.feature+1)*(1-smooth(state.core));
+    const envelope=envelopes[from].map((value,i)=>lerp(value,envelopes[to][i],mix));
+    minX=lerp(minX,-envelope[0],weight);maxX=lerp(maxX,envelope[0],weight);
+    minY=lerp(minY,-envelope[1],weight);maxY=lerp(maxY,envelope[1],weight);
+    minZ=lerp(minZ,-envelope[2],weight);maxZ=lerp(maxZ,envelope[2],weight);
     camera.updateMatrixWorld();
     const bounds=()=>{
       root.updateMatrixWorld(true);
@@ -844,10 +853,15 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   }
 
   const featureAccent=accentMats[0].clone(),featureLineColor=new T.Color(),nextLineColor=new T.Color();
-  function render() {
+  let sceneRenderRequest=0;
+  function render(){
+    if(sceneRenderRequest)return;
+    sceneRenderRequest=requestAnimationFrame(()=>{sceneRenderRequest=0;renderFrame();});
+  }
+  function renderFrame() {
     const t=state.clock/1000;
     const isMobile=width<1200;
-    const featurePhase=clamp(state.feature+1);
+    const featurePhase=smooth(state.feature+1);
     const f=state.feature;
     const ft=clamp(f,0,5), fl=Math.floor(ft),fh=Math.ceil(ft),fm=smooth(ft-fl);
     const sceneOrder=[5,0,1,2,3,4];
@@ -924,13 +938,16 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
         g.scale.setScalar(lerp(.67,1,carrier.dock));o.accent.material=accentMats[carrier.color];
       }
     });
-    shield.visible=featurePhase>.95&&fi===4&&state.protected>.1&&rt<.8;
-    if(shield.visible){shield.scale.setScalar(1+Math.sin(t*.8)*.007);shieldEdge.material.opacity=.35+Math.sin(t*1.1)*.12;}
+    const securityWeight=featurePhase*lerp(sceneOrder[fl]===4?1:0,sceneOrder[fh]===4?1:0,fm)*(1-state.core);
+    shield.visible=securityWeight>.001&&state.protected>.1&&rt<.8;
+    shieldMat.opacity=.025*securityWeight;
+    if(shield.visible){shield.scale.setScalar(1+Math.sin(t*.8)*.007);shieldEdge.material.opacity=(.35+Math.sin(t*1.1)*.12)*securityWeight;}
     dimensions.visible=state.light>.5;
-    lattice.visible=flatten>.5||(featurePhase>.95&&(fi===0||fi===2));
-    gridLines.forEach(l=>{l.material.color.set(state.light>.5?'#777c76':'#85827e');l.material.opacity=flatten>.5?.22:.045;});
+    const latticeWeight=Math.max(flatten,featurePhase*lerp([1,3].includes(fl)?1:0,[1,3].includes(fh)?1:0,fm))*(1-state.core);
+    lattice.visible=latticeWeight>.001;
+    gridLines.forEach(l=>{l.material.color.set(state.light>.5?'#777c76':'#85827e');l.material.opacity=lerp(.045,.22,flatten)*latticeWeight;});
     signals.visible=arrival.completed&&(heroGate>.5||state.open>.3||featurePhase>.5)&&rt<.85;
-    dots.forEach((d,i)=>{const a=(i/32)*Math.PI*2+t*.23;d.position.set(Math.cos(a)*3.9,Math.sin(a)*2.6,Math.sin(a*2+t*.2)*.6);d.scale.setScalar(featurePhase>.95&&fi===3?1.7:1);});
+    dots.forEach((d,i)=>{const a=(i/32)*Math.PI*2+t*.23;d.position.set(Math.cos(a)*3.9,Math.sin(a)*2.6,Math.sin(a*2+t*.2)*.6);d.scale.setScalar(1+.7*featurePhase*lerp(fl===4?1:0,fh===4?1:0,fm));});
     fitMobileScene();
     renderWowScene();
     renderEngineering();
@@ -1062,7 +1079,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     {id:'orbis',name:'ORBIS',kind:'service',color:'#ff4b4b',time:6750,tag:'AI 팩토리 · AX 전환 서비스',description:'설계와 구축에서 운영과 최적화까지.<br>AI 팩토리의 전 주기를 하나의 책임으로.',summary:'AI 팩토리 · AX 전환 · 운영 서비스',links:['컨설팅 · 설계','구축 · 운영','AI Careship 운영 서비스']}
   ];
   const chapterStarts=[6000,7400,8800,10200,11600,13100];
-  const chapters=['orbis','fractos','fabrix','stratos','agentic','security'].map((id,i)=>({...products.find(p=>p.id===id),start:chapterStarts[i],time:chapterStarts[i]+750}));
+  const chapters=['orbis','fractos','fabrix','stratos','agentic','security'].map((id,i)=>({...products.find(p=>p.id===id),start:chapterStarts[i],time:chapterStarts[i]+1150}));
   const symbolId={fractos:'fractos',fabrix:'fabrix',stratos:'stratos',agentic:'agentic',security:'security',orbis:'orbis'};
   const symbol=(p,extra='')=>`<svg ${extra} viewBox="0 0 100 100" aria-hidden="true"><use href="#weaver-mark-${symbolId[p.id]}"></use></svg>`;
   const story=document.querySelector('#story');
@@ -1083,7 +1100,6 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   function keepMotion(job){wow.jobs.add(job);if(wow.paused)job.pause();return job;}
   function releaseProductMotion(){
     wow.morph?.cancel();wow.allocation?.cancel();wow.auto?.cancel();wow.jobs.clear();
-    state.assignmentBlend.forEach((m,i)=>m.value=state.assignmentMask&(1<<i)?1:0);
     if(wow.allocation){state.operationProgress=1;state.meteredCount=state.assignedCount;}
     wow.auto=null;wow.allocation=null;wow.morph=null;
     panel.classList.remove('resource-panel');document.body.classList.remove('resource-active');
@@ -1245,7 +1261,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     const starts=[950,2300,3400],ends=[2300,3400,4500];
     dockCopy(document.querySelector('.journey-copy'),starts[stage],ends[stage],innerWidth<700?144:innerHeight*.32,innerWidth<700?104:132);
   }
-  function dockBusiness(i){if(i<0)return;dockCopy(businessCopy,chapterStarts[i],chapterStarts[i+1]||14600,innerWidth<700?176:innerHeight*.32,innerWidth<700?104:132);}
+  function dockBusiness(i){if(i<0)return;dockCopy(businessCopy,chapterStarts[i],(chapterStarts[i+1]||14600)+1000,innerWidth<700?176:innerHeight*.32,innerWidth<700?104:132);}
   function layoutReadingRails(){
     dockCopy(document.querySelector('.hero-copy'),0,1050,innerWidth<700?112:Math.max(144,innerHeight*.5-224),innerWidth<700?104:132);
     dockJourney(state.progress<2300?0:state.progress<3400?1:2);
@@ -1264,7 +1280,7 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     // Paper reaches its light value before dark ink enters; reverse scroll is symmetric.
     if(zone==='blueprint')alpha=smooth((t-4850)/150)*(1-smooth((t-5750)/100))*smooth((state.light-.88)/.1);
     // Label the geometry that is actually on screen, with a quiet gap during the morph.
-    if(zone==='business')alpha=(1-smooth((Math.abs(state.feature-next)-.04)/.30))*(1-smooth((t-14440)/160));
+    if(zone==='business')alpha=(1-smooth((Math.abs(state.feature-next)-.12)/.38))*(1-smooth((t-14440)/160));
     if(zone==='core')alpha=smooth((t-14600)/160);
     for(const key of ['hero','journey','blueprint','business','core']){
       const el=groups[key],a=key===zone?alpha:0;el.style.opacity=a;el.inert=a<.03;el.setAttribute('aria-hidden',String(a<.03));
@@ -1386,12 +1402,12 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
   function switchProduct(i){
     if(active===i)return;releaseProductMotion();active=i;
     if(i<0){panel.hidden=true;widget.hidden=true;setMobileProduct(null,-1);return;}
-    state.allocation=(state.assignedCount-4)/4;state.inspect=0;state.budget=0;state.workflow=0;state.protected=1;state.serviceStep=0;
+    state.allocation=(state.assignedCount-4)/4;state.protected=1;
     const p=chapters[i];document.documentElement.style.setProperty('--accent',p.color);
     businessCopy.innerHTML=`<span class="eyebrow mono">${p.tag}</span><div class="product-heading">${symbol(p)}<h2>${p.name}</h2></div><p>${p.description}</p><ul class="product-links">${p.links.map((x,j)=>`<li><a href="product-${p.id}.html#feature-${j+1}"><span class="arrow">→</span>${x}</a></li>`).join('')}</ul>`;
     panel.innerHTML=panelContent(p);panel.hidden=false;widget.hidden=false;
     dockBusiness(i);productSignature(p);if(p.id==='fractos')setupAllocation();setMobileProduct(p,i);
-    animate(businessCopy,{y:[12,0],duration:350,ease:'out(3)'});animate(panel,{y:[12,0],duration:350,ease:'out(3)'});
+    /* The product reading rail stays still while the geometry changes. */
     animate('.product-links li',{opacity:[0,1],x:[-8,0],delay:stagger(100,{start:150}),duration:250,ease:'out(3)'});
     if(p.id==='fabrix'){const path=$('.health-spark path');animate(svg.createDrawable(path),{draw:['0 0','0 1'],duration:900,ease:'inOut(2)'});}
     $('.timeline-counter').textContent=p.kind==='service'?'전 주기 서비스':`0${i} / 05`;
@@ -1456,14 +1472,14 @@ body.intro-active .mobile-stage-ui{visibility:hidden}
     .add(state,{flat:1,duration:900},4400)
     .add(state,{light:1,duration:450,ease:'inOutQuad'},4400)
     .add(state,{light:0,duration:400,ease:'inOutQuad'},5850)
-    .add(state,{feature:0,duration:500},6000)
-    .add(state,{feature:1,duration:500},7400)
-    .add(state,{feature:2,duration:500},8800)
-    .add(state,{feature:3,duration:500},10200)
-    .add(state,{feature:4,duration:500},11600)
-    .add(state,{feature:5,duration:650},13100)
+    .add(state,{feature:0,duration:900,ease:'linear'},6000)
+    .add(state,{feature:1,duration:900,ease:'linear'},7400)
+    .add(state,{feature:2,duration:900,ease:'linear'},8800)
+    .add(state,{feature:3,duration:900,ease:'linear'},10200)
+    .add(state,{feature:4,duration:900,ease:'linear'},11600)
+    .add(state,{feature:5,duration:1100,ease:'linear'},13100)
     .add(state,{core:1,duration:800},14600);
-  for(const [start,end]of [[3160,3900],[7250,7900],[10050,10700]]){master.add(state,{cinematic:.45,duration:380,ease:'inOut(2)'},start).add(state,{cinematic:0,duration:420,ease:'inOut(2)'},end);}
+  for(const [start,end]of [[3160,3900]]){master.add(state,{cinematic:.45,duration:380,ease:'inOut(2)'},start).add(state,{cinematic:0,duration:420,ease:'inOut(2)'},end);}
   const scroll=onScroll({target:story,enter:'top top',leave:'bottom bottom',sync:reduced?true:.9}).link(master);
   window.WeaverStory={reset(){master.seek(0,true);playhead.time=0;update();}};
   function checkEnd(){const v=scrollY>=story.offsetHeight-innerHeight-2; if(v!==ended){ended=v;document.body.classList.toggle('story-ended',v);}}
