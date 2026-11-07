@@ -4,9 +4,7 @@
   let paused=reduced;
   const reviewQuery=new URLSearchParams(location.search).get('demo-phase');
   const reviewPhase=/^[0-3]$/.test(reviewQuery||'')?Number(reviewQuery):null;
-  const controls=[...document.querySelectorAll('[data-motion-control]')],menu=document.querySelector('.product-menu');
-  document.addEventListener('click',e=>{if(!menu.contains(e.target))menu.open=false;});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.open){menu.open=false;menu.querySelector('summary').focus();}});
+  const controls=[...document.querySelectorAll('[data-motion-control]')];
   const visuals=[...document.querySelectorAll('[data-motion-visual],[data-flow-visual]')].map(el=>({el,visible:false,step:reviewPhase??0,timer:null,job:null,allocationJob:null,captionJob:null,count:4,phases:Math.max(3,...[...el.querySelectorAll('[data-step]')].map(x=>Number(x.dataset.step)+1))}));
   const text=el=>el?.textContent.trim()||'';
   function description(model){
@@ -66,7 +64,53 @@
       if(glyph)model.job=A.animate(glyph,{y:[-3,3,-3],rotate:['-1deg','1deg','-1deg'],duration:7500,loop:true,ease:'inOut(2)',autoplay:false});
     }
   });
+  const meterRoot=document.querySelector('[data-stratos-meter]');
+  const meterState=meterRoot?{phase:(reviewPhase??0)%3,visible:false,started:false,progress:null,counter:null,caption:null}:null;
+  const meterStories=[
+    ['할당과 실사용 확인','할당한 GPU 시간에서 실사용 환산과 미사용분을 나눠 봅니다.'],
+    ['미사용 구간을 구분','1,000 GPU·h 중 350 GPU·h가 미사용분으로 환산됩니다.'],
+    ['사용량을 비용으로','H100 예시 단가를 적용해 실사용과 미사용의 비용을 구분합니다.']
+  ];
+  function meterNumbers(allocated){
+    const a=Math.round(allocated),used=Math.round(a*.65),idle=a-used;
+    const values={allocated:a,allocatedFormula:a,used,idle,totalCost:a*3900,usedCost:used*3900,idleCost:idle*3900};
+    meterRoot.querySelectorAll('[data-meter-value]').forEach(node=>node.textContent=values[node.dataset.meterValue].toLocaleString('ko-KR'));
+    meterRoot.querySelector('[data-meter-focus-number]').textContent=values[['allocated','idle','totalCost'][meterState.phase%3]].toLocaleString('ko-KR');
+  }
+  function meterPaint(){
+    if(!meterState)return;
+    const phase=meterState.phase%3;meterRoot.dataset.phase=String(phase);
+    meterRoot.querySelectorAll('[data-meter-step]').forEach(node=>{if(Number(node.dataset.meterStep)===phase)node.setAttribute('aria-current','step');else node.removeAttribute('aria-current');});
+    const heading=meterRoot.querySelector('[data-meter-title]'),copy=meterRoot.querySelector('[data-meter-copy]');
+    heading.textContent=meterStories[phase][0];copy.textContent=meterStories[phase][1];
+    meterRoot.querySelector('[data-meter-focus-label]').textContent=['할당한 GPU 시간','미사용으로 환산된 시간','할당 기준 비용'][phase];
+    meterRoot.querySelector('[data-meter-focus-unit]').textContent=phase===2?'원':'GPU·h';meterNumbers(1000);
+    if(A&&!reduced&&reviewPhase===null&&meterState.visible){meterState.caption?.cancel();meterState.caption=A.animate([heading,copy],{opacity:[.55,1],duration:350,ease:'out(2)'});}
+  }
+  function meterSync(){
+    if(!meterState)return;
+    const enabled=!paused&&!reduced&&!document.hidden&&reviewPhase===null&&meterState.visible;
+    meterRoot.dataset.mode=reduced||!A||reviewPhase!==null?'static':paused?'paused':'auto';
+    meterRoot.querySelector('[data-meter-mode]').textContent=reduced||!A||reviewPhase!==null?'동작 예시':paused?'일시 정지':'자동 시연';
+    if(enabled&&A){
+      if(!meterState.started){
+        meterState.started=true;const counter={value:0};
+        meterState.counter=A.animate(counter,{value:1000,duration:1100,ease:'out(3)',onUpdate:()=>meterNumbers(counter.value),onComplete:()=>meterNumbers(1000)});
+      }
+      meterState.progress?.resume();if(meterState.counter&&!meterState.counter.completed)meterState.counter.resume();
+    }else{
+      meterState.progress?.pause();if(meterState.counter){meterState.counter.cancel();meterState.counter=null;meterNumbers(1000);}meterState.caption?.cancel();
+      meterRoot.querySelectorAll('[data-meter-title],[data-meter-copy]').forEach(node=>node.style.removeProperty('opacity'));
+    }
+  }
+  if(meterState){
+    meterNumbers(1000);meterPaint();
+    if(A&&!reduced&&reviewPhase===null)meterState.progress=A.animate(meterRoot.querySelector('[data-meter-progress]'),{scaleX:[0,1],duration:4500,ease:'linear',loop:true,autoplay:false,onLoop:()=>{meterState.phase=(meterState.phase+1)%3;meterPaint();}});
+    new IntersectionObserver(entries=>{meterState.visible=entries[0].isIntersecting;meterSync();},{threshold:.15}).observe(meterRoot);
+  }
+
   function sync(){
+    meterSync();
     const enabled=!paused&&!reduced&&!document.hidden&&reviewPhase===null;
     for(const m of visuals){
       if(enabled&&m.visible){m.timer?.resume();m.job?.resume();if(m.allocationJob&&!m.allocationJob.completed)m.allocationJob.resume();}
@@ -95,4 +139,31 @@
     screenDialog.addEventListener('close',()=>{document.documentElement.style.removeProperty('overflow');opener?.focus({preventScroll:true});});
   }
   sync();
+})();
+
+(() => {
+ 'use strict';
+ const header=document.querySelector('[data-weaver-gnb]');if(!header)return;
+ const toggle=header.querySelector('.weaver-gnb-toggle'),panel=header.querySelector('.weaver-gnb-panel'),backdrop=header.querySelector('.weaver-gnb-backdrop');
+ let open=false;
+ function setOpen(next,restore=false){
+  open=next;toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'제품 메뉴 닫기':'제품 메뉴 열기');
+  panel.hidden=!open;backdrop.hidden=!open;document.documentElement.classList.toggle('weaver-navigation-open',open);
+  toggle.querySelector('path').setAttribute('d',open?'M6 6l12 12M6 18L18 6':'M5 7h14M5 12h14M5 17h14');
+  if(open)panel.scrollTop=0;if(restore)toggle.focus({preventScroll:true});
+ }
+ toggle.addEventListener('click',()=>setOpen(!open));
+ backdrop.addEventListener('click',()=>setOpen(false,true));
+ header.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setOpen(false)));
+ document.addEventListener('weaver-close-navigation',()=>setOpen(false));
+ document.addEventListener('keydown',e=>{
+  if(!open)return;
+  if(e.key==='Escape'){e.preventDefault();setOpen(false,true);}
+  if(e.key==='Tab'){
+   const nodes=[...header.querySelectorAll('a,button')].filter(el=>!el.hidden&&el.getClientRects().length&&el.tabIndex>=0),first=nodes[0],last=nodes[nodes.length-1];
+   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  }
+ });
+ const breakpoint=matchMedia('(max-width:834px)');breakpoint.addEventListener('change',()=>setOpen(false));
+ addEventListener('pagehide',()=>setOpen(false));
 })();
