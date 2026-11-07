@@ -100,7 +100,7 @@
   ];
   const symbol=p=>`<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#weaver-mark-${p.id}"/></svg>`;
   const menu=document.getElementById('identity-products-menu'),menuButton=document.getElementById('identity-products-button');
-  menu.innerHTML=products.map(p=>`<a href="./#${p.id}" style="--c:${p.color}">${symbol(p)}<span>${p.name}<small>${p.role}</small></span><span aria-hidden="true">↗</span></a>`).join('');
+  menu.innerHTML=products.map(p=>`<a href="product-${p.id}.html" style="--c:${p.color}">${symbol(p)}<span>${p.name}<small>${p.role}</small></span><span aria-hidden="true">↗</span></a>`).join('');
   function closeProducts(){menu.hidden=true;menuButton.setAttribute('aria-expanded','false');}
   menuButton.addEventListener('click',()=>{const open=menu.hidden;menu.hidden=!open;menuButton.setAttribute('aria-expanded',String(open));});
   document.addEventListener('click',e=>{if(!e.target.closest('.identity-products'))closeProducts();});
