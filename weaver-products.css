@@ -345,3 +345,32 @@
 @media(max-width:700px){.detail-layout .feature-copy>.detail-description{font-size:16px;line-height:1.65;margin-top:22px}.detail-layout .feature-copy,.detail-layout #workflow{scroll-margin-top:82px}}
 
 @media(min-width:701px) and (max-width:1100px) and (max-height:500px){.detail-layout .detail-hero{padding-top:80px;padding-bottom:60px}.detail-layout h1{font-size:52px}.detail-layout .detail-toc{margin-top:80px}.detail-layout .detail-feature{padding-top:110px}.detail-layout .detail-workflow,.detail-layout .detail-roles{padding-top:110px}}
+
+/* Exact hero geometry from the originally supplied flex employee-management page.
+   Source breakpoints: <=834, 835..1360, >=1361. Brand artwork and copy are WEAVER. */
+.detail-layout .product-header{position:fixed;inset:0 0 auto}
+.detail-layout .reference-hero{--ref-section:240px;--ref-inset:60px;--ref-gap:72px;--ref-symbol:60px;--ref-title:72px;--ref-description:25px;--ref-action-top:12px;padding:var(--ref-section) var(--ref-inset);display:flex;flex-direction:column;background:#111;color:#fff;text-align:center}
+.detail-layout .reference-header-space{height:0;margin:0 0 68px;flex:0 0 auto}
+.detail-layout .reference-hero-content{display:flex;flex-direction:column;align-items:center;gap:var(--ref-gap);width:100%;word-break:keep-all}
+.detail-layout .reference-lockup{display:inline-flex;align-items:center;gap:13px;min-width:0;height:var(--ref-symbol);flex:0 0 auto;white-space:nowrap}
+.detail-layout .reference-symbol{display:block;width:var(--ref-symbol);height:var(--ref-symbol);flex:0 0 var(--ref-symbol);color:var(--accent)}
+.detail-layout .reference-lockup .hero-symbol{position:static;display:block;inset:auto;translate:none;rotate:none;width:var(--ref-symbol);height:var(--ref-symbol);color:var(--accent)}
+.detail-layout .reference-product-name{font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.03em;color:#fff}
+.detail-layout .reference-hero-message{display:flex;flex-direction:column;gap:12px;align-items:center;width:100%}
+.detail-layout .reference-hero h1{font-size:var(--ref-title);font-weight:700;line-height:1.2;letter-spacing:-.04em;padding:0;margin:0;max-width:none;word-break:keep-all;overflow-wrap:normal}
+.detail-layout .reference-hero-description{width:100%;font-size:var(--ref-description);font-weight:600;line-height:1.4;letter-spacing:-.02em;color:#fff;margin:0;padding:0;word-break:keep-all}
+.detail-layout .reference-hero-actions{display:flex;flex-direction:row;justify-content:center;align-items:center;gap:12px;padding-top:var(--ref-action-top);margin:0}
+.detail-layout .reference-hero-actions>a{display:flex;align-items:center;justify-content:center;gap:4px;font-family:inherit;font-weight:700;font-size:17px;line-height:normal;height:68px;min-height:68px;padding:24px 28px;border-radius:16px;white-space:nowrap;flex:0 0 auto;letter-spacing:-.02em}
+@media(min-width:835px) and (max-width:1360px){
+ .detail-layout .reference-hero{--ref-section:144px;--ref-inset:40px;--ref-gap:56px;--ref-symbol:46px;--ref-title:52px;--ref-description:22px;--ref-action-top:11px}
+ .detail-layout .reference-lockup{gap:10px}.detail-layout .reference-product-name{font-size:23px}
+}
+@media(max-width:834px){
+ .detail-layout .reference-hero{--ref-section:72px;--ref-inset:20px;--ref-gap:40px;--ref-symbol:32px;--ref-title:40px;--ref-description:17px;--ref-action-top:10px;text-align:start}
+ .detail-layout .reference-hero-content{align-items:flex-start}
+ .detail-layout .reference-lockup{gap:12px}.detail-layout .reference-product-name{font-size:20px}
+ .detail-layout .reference-hero-message{align-items:stretch}
+ .detail-layout .reference-hero-actions{flex-direction:column;width:100%;align-items:stretch}
+ .detail-layout .reference-hero-actions>a{width:100%;font-size:17px}
+}
+.detail-layout .reference-hero h1{ text-wrap:balance }
