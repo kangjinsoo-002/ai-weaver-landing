@@ -275,6 +275,100 @@ footer .footer-motion-toggle span{font-size:12px}
  .products-menu{max-height:calc(100svh - 82px);overflow-y:auto;overscroll-behavior:contain}
 }
 
+/* The mobile edit is a composition of type, object and one live insight. */
+.mobile-stage-ui{display:none}
+body.intro-active .mobile-stage-ui{visibility:hidden}
+@media(max-width:700px),(max-width:1100px) and (max-height:500px){
+ .mobile-stage-ui:not([hidden]){display:block;position:fixed;inset:0;z-index:6;pointer-events:none}
+ .side-panel,.timeline-widget{display:none!important}
+ .mobile-console{position:absolute;left:20px;right:20px;bottom:calc(83px + env(safe-area-inset-bottom,0px));padding:13px 15px 12px;border:1px solid #ffffff1f;border-radius:15px;background:linear-gradient(140deg,#13191bf2,#0d1113f7);box-shadow:0 12px 40px #0004;backdrop-filter:blur(15px);overflow:hidden;pointer-events:auto}
+ .mobile-console:before{content:'';position:absolute;inset:0 18px auto;height:1px;background:linear-gradient(90deg,transparent,var(--mobile-accent),transparent);opacity:.75}
+ .mobile-console-kicker{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:9px;letter-spacing:.075em;color:#8f9e98;line-height:1.5}
+ .mobile-console-kicker>span:last-child{display:flex;align-items:center;gap:5px;letter-spacing:0;white-space:nowrap}
+ .mobile-console-kicker i{width:3px;height:3px;border-radius:50%;background:var(--mobile-accent)}
+ .mobile-console-body{display:grid;grid-template-columns:minmax(0,1fr) auto 40px;gap:12px;align-items:center;margin-top:7px}
+ .mobile-console-message{min-width:0}.mobile-console-message strong{display:block;font-size:16px;letter-spacing:-.045em;font-weight:550;line-height:1.4;word-break:keep-all}
+ .mobile-console-message>span{display:block;font-size:10px;letter-spacing:-.02em;line-height:1.6;color:#8f9e98;margin-top:4px;word-break:keep-all}
+ .mobile-console-value{display:flex;align-items:baseline;gap:4px;white-space:nowrap}
+ .mobile-console-value b{font-size:30px;font-weight:500;letter-spacing:-.055em;color:#f4f2ed;font-variant-numeric:tabular-nums;line-height:1}
+ .mobile-console-value small{font-size:9px;color:#8f9e98}
+ .mobile-console-link{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;color:#dce3de;font-size:20px;border-left:1px solid #ffffff13}
+ .mobile-console-track{display:flex;gap:5px;margin-top:11px;height:5px}
+ .mobile-console-track>span{height:5px;flex:1;background:#ffffff0d;border-radius:1px;transition:background .25s,box-shadow .25s}
+ .mobile-console-track>span.is-on{background:var(--mobile-accent);box-shadow:0 0 10px color-mix(in srgb,var(--mobile-accent) 16%,transparent)}
+ .mobile-chapters{position:absolute;bottom:calc(15px + env(safe-area-inset-bottom,0px));left:20px;right:20px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;padding:5px 3px;background:#0b1012f2;border:1px solid #ffffff0d;border-radius:12px;backdrop-filter:blur(16px);pointer-events:auto}
+ .mobile-chapters>a{min-height:44px;min-width:0;display:flex;justify-content:center;align-items:center;position:relative;color:#65706b;border-radius:7px;transition:color .2s}
+ .mobile-chapters svg{width:27px;height:27px;flex-shrink:0;overflow:visible}
+ .mobile-chapters a[aria-current]{color:var(--c);background:color-mix(in srgb,var(--c) 8%,transparent)}
+ .mobile-chapter-line{position:absolute;bottom:0;height:1px;left:10px;right:10px;background:var(--c);transform:scaleX(0);transform-origin:left}
+ .mobile-chapters a[aria-current] .mobile-chapter-line{transform:scaleX(var(--mobile-progress,0))}
+ .business-copy:before{content:attr(data-mobile-chapter);position:absolute;top:0;right:0;font-size:9px;line-height:1.6;letter-spacing:.08em;color:#87928b}
+ .business-copy>.eyebrow{padding-right:56px;line-height:1.6}
+ body[data-mobile-zone]:not([data-mobile-zone=hero]):not(.intro-active) .arrival-control{display:none}
+ #model-caption{display:none}
+ .site-header .edition{display:none}
+ .site-header nav,.site-header nav .brand-nav{font-size:12px}
+ .site-header:after{opacity:.35}
+ .hero-actions .button{min-height:46px;font-size:12px;padding:0 17px;gap:34px}
+ body:not(.intro-active) .arrival-control{font-size:0;min-width:44px;min-height:44px;border:1px solid #ffffff24;border-radius:50%;justify-content:center;right:20px;bottom:18px;background:#080a0c}
+ body:not(.intro-active) .arrival-control span{font-size:18px}
+ .product-heading .morph-mark{width:50px;height:50px}
+ .product-heading{gap:12px}.product-heading h2{font-size:39px;letter-spacing:-.055em;line-height:1.12}
+ .copy-rail>.business-copy p{font-size:13px;line-height:1.75;color:#b8c2bb}
+ .stage:after{content:'';position:absolute;width:var(--mobile-object-width,240px);height:var(--mobile-object-height,220px);left:var(--mobile-object-x,50%);top:var(--mobile-object-y,55%);translate:-50% -50%;background:radial-gradient(ellipse,color-mix(in srgb,var(--accent,#4d9cff) 6%,transparent),transparent 68%);pointer-events:none;z-index:-1}
+ .stage{isolation:isolate}#scene{position:relative;z-index:0}
+ .connections{padding-top:72px;padding-bottom:56px}
+ .connections .section-heading h2{font-size:clamp(34px,9.5vw,42px);font-weight:650;line-height:1.16}
+ .orbis-service-band{padding:20px 16px 16px!important;border-radius:16px!important;overflow:hidden}
+ .orbis-service-heading h3{font-size:44px;line-height:1.1;letter-spacing:-.045em}
+ .orbis-service-heading p{font-size:12px;line-height:1.8;word-break:keep-all}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .product-grid .product-tile{display:flex;flex-direction:column;align-items:flex-start;position:relative;min-width:0;min-height:218px;padding:17px 13px 14px;gap:15px;background:#f4f2ed;border-radius:10px;border:1px solid #2524230b;overflow:hidden}
+ .product-grid .product-tile>svg{width:65px;height:65px;align-self:center;margin:8px 0 4px}
+ .product-grid .product-tile h3{font-size:20px;line-height:1.15;letter-spacing:-.055em;white-space:nowrap}
+ .product-grid .product-tile p{font-size:10px;line-height:1.65;margin-top:7px;color:#6f766f}
+ .product-grid .product-tile .arrow{position:absolute;right:11px;top:12px;font-size:14px;color:#858d83}
+ .product-grid .product-tile:last-child{grid-column:1/-1;display:grid;grid-template-columns:72px 1fr;gap:17px;align-items:center;min-height:122px;padding:22px}
+ .product-grid .product-tile:last-child>svg{margin:0;width:60px;height:60px}
+ .scope-caption{font-size:10px!important;line-height:1.7!important;margin-bottom:16px!important}
+ .core-band{padding:22px 18px!important;border-radius:14px!important;line-height:1.8}
+ .brand-finale{padding-top:64px;padding-bottom:68px}
+ .finale-visual{height:290px}.brand-finale h2{font-size:36px;line-height:1.2}
+ .finale-actions .button{width:100%;justify-content:space-between;min-height:48px}
+ .finale-actions .text-button{min-height:44px;font-size:12px}
+}
+@media(max-width:370px){
+ .product-heading h2{font-size:35px}.product-heading .morph-mark{width:44px;height:44px}
+ .mobile-console{left:16px;right:16px;padding:11px 12px}
+ .mobile-console-body{gap:7px;grid-template-columns:minmax(0,1fr) auto 34px}
+ .mobile-console-message strong{font-size:14px}.mobile-console-message>span{font-size:9px}
+ .mobile-console-value b{font-size:25px}.mobile-console-value small{font-size:8px}
+ .mobile-console-link{min-width:34px;margin-left:-5px;width:44px}
+ .mobile-chapters{left:16px;right:16px}.mobile-chapters svg{width:25px;height:25px}
+ .product-grid .product-tile{padding:15px 11px;min-height:205px}.product-grid .product-tile h3{font-size:18px}
+}
+@media(max-width:700px) and (max-height:620px){
+ .product-heading h2{font-size:34px}.product-heading .morph-mark{width:42px;height:42px}
+ .business-copy .product-heading{margin-bottom:10px}
+ .copy-rail>.business-copy p{font-size:12px;line-height:1.65}
+ .business-copy .eyebrow{font-size:9px;margin-bottom:10px}
+ .mobile-console-message>span{display:none}.mobile-console-body{margin-top:5px}
+ .mobile-console{padding-top:10px;padding-bottom:10px}
+ .mobile-console-track{margin-top:7px}
+ .mobile-console-value b{font-size:25px}
+ .mobile-chapters{bottom:10px}.mobile-console{bottom:77px}
+}
+@media(min-width:701px) and (max-width:1100px) and (max-height:500px){
+ .mobile-console{width:28vw;left:auto;right:24px;bottom:80px}
+ .mobile-console-body{grid-template-columns:minmax(0,1fr) 34px;gap:7px}.mobile-console-value{display:none}
+ .mobile-console-message strong{font-size:14px}.mobile-console-message>span{font-size:10px}
+ .mobile-chapters{width:auto;left:24px;right:24px;bottom:14px}
+ .mobile-chapters svg{width:25px;height:25px}.mobile-chapters>a{min-height:44px}
+ .product-heading h2{font-size:32px}.product-heading .morph-mark{width:40px;height:40px}
+ .copy-rail>.business-copy p{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.mobile-console-track>span,.mobile-chapters>a{transition:none}}
+
 </style>
 </head>
 <body>
@@ -652,18 +746,22 @@ footer .footer-motion-toggle span{font-size:12px}
   const mobileFitPoint=new T.Vector3();
   function fitMobileScene(){
     const landscape=width>700&&width<=1100&&height<=500;
-    if((width>700&&!landscape)||!arrival.completed)return;
+    if((width>700&&!landscape)||(!arrival.completed&&arrival.pose<.88))return;
+    const handoff=arrival.completed?1:Math.max(0,Math.min(1,(arrival.pose-.88)/.12));
+    window.WeaverMobile?.tick(state.clock);
     const p=state.progress;
     const copy=document.querySelector(p<950?'.hero-copy':p<4500?'.journey-copy':p<6000?'.blueprint-copy':p<14600?'.business-copy':'.core-copy');
     const copyBottom=copy?.getBoundingClientRect().bottom||100;
     let top=Math.max(96,Math.min(height*.65,copyBottom+20)),bottom=height-64;
-    const card=document.querySelector('.side-panel');
-    if(p>=6000&&p<14600&&card&&!card.hidden)bottom=Math.min(bottom,card.getBoundingClientRect().top-18);
+    const card=document.querySelector('#mobile-console');
+    const hasCard=card&&!card.parentElement.hidden;
+    if(p>=6000&&p<14600&&hasCard)bottom=Math.min(bottom,card.getBoundingClientRect().top-20);
     if(p>=4500&&p<6000){top=Math.max(top+58,Math.max(260,copyBottom+20)+58);bottom=height-130;}
     let left=32,right=width-32;
     if(landscape){
       left=Math.max(width*.34,(copy?.getBoundingClientRect().right||width*.3)+20);top=88;bottom=height-48;
-      if(p>=6000&&p<14600&&card&&!card.hidden)right=card.getBoundingClientRect().left-20;
+      if(p>=6000&&p<14600&&hasCard)right=card.getBoundingClientRect().left-20;
+      if(p>=6000&&p<14600&&hasCard)bottom=height-90;
       if(p>=4500&&p<6000){left=width*.38+28;right=width-48;top=154;bottom=height-112;}
     }
     const room=Math.max(48,bottom-top);
@@ -671,7 +769,7 @@ footer .footer-motion-toggle span{font-size:12px}
     const include=(x,y,z,dx,dy,dz)=>{minX=Math.min(minX,x-dx);maxX=Math.max(maxX,x+dx);minY=Math.min(minY,y-dy);maxY=Math.max(maxY,y+dy);minZ=Math.min(minZ,z-dz);maxZ=Math.max(maxZ,z+dz);};
     gpus.forEach(({g})=>include(g.position.x,g.position.y,g.position.z,.4*g.scale.x,.4*g.scale.x,.45*g.scale.x));
     racks.forEach(({g})=>{if(g.visible)include(g.position.x,g.position.y,g.position.z,g.scale.x,2.3*g.scale.x,g.scale.x);});
-    if(enclosure.visible)include(0,0,0,3.4+state.open*2.3,2.5+state.open*1.7,1.3+state.open*2.3);
+    if(enclosure.visible)shell.forEach(({g})=>{const mesh=g.children[0];include(g.position.x,g.position.y,g.position.z,mesh.scale.x*.56,mesh.scale.y*.56,mesh.scale.z*.56);});
     if(shield.visible)include(0,0,0,3.7,2.65,1.6);
     camera.updateMatrixWorld();
     const bounds=()=>{
@@ -685,12 +783,20 @@ footer .footer-motion-toggle span{font-size:12px}
       return {left,right,upper,lower};
     };
     let b=bounds();
-    const factor=Math.min(1,(right-left)/(b.right-b.left),room/(b.lower-b.upper))*.96;
-    root.scale.multiplyScalar(factor);b=bounds();
+    const factor=Math.min(1.18,(right-left)/(b.right-b.left),room/(b.lower-b.upper))*.96;
+    root.scale.multiplyScalar(1+(factor-1)*handoff);b=bounds();
     const unit=2*camera.position.z*Math.tan(camera.fov*Math.PI/360)/height;
-    root.position.x+=((left+right)/2-(b.left+b.right)/2)*unit;
-    root.position.y-=((top+bottom)/2-(b.upper+b.lower)/2)*unit;
+    root.position.x+=((left+right)/2-(b.left+b.right)/2)*unit*handoff;
+    root.position.y-=((top+bottom)/2-(b.upper+b.lower)/2)*unit*handoff;
     root.updateMatrixWorld(true);
+    const cx=Math.round((left+right)/2),cy=Math.round((top+bottom)/2);
+    const stage=document.querySelector('.stage');
+    const decoration=`${cx}:${cy}:${Math.round(right-left)}:${Math.round(room)}`;
+    if(stage.dataset.mobileComposition!==decoration){
+      stage.dataset.mobileComposition=decoration;
+      stage.style.setProperty('--mobile-object-x',cx+'px');stage.style.setProperty('--mobile-object-y',cy+'px');
+      stage.style.setProperty('--mobile-object-width',Math.round(right-left)+'px');stage.style.setProperty('--mobile-object-height',Math.round(room)+'px');
+    }
   }
 
   const engineeringHost=document.getElementById('engineering-overlay');
@@ -1111,6 +1217,7 @@ footer .footer-motion-toggle span{font-size:12px}
   // Each reading rail lets the copy approach, dock below the header, and hold.
   const readingRails=new Map();
   function dockCopy(el,start,end,lead,stop){
+    if(innerWidth<=700&&innerHeight<=620)stop=90;
     if(innerWidth>700&&innerWidth<=1100&&innerHeight<=500)stop=96;
     let rail=readingRails.get(el);
     if(!rail){rail=document.createElement('div');rail.className='copy-rail';el.before(rail);rail.append(el);readingRails.set(el,rail);}
@@ -1145,7 +1252,88 @@ footer .footer-motion-toggle span{font-size:12px}
     for(const key of ['hero','journey','blueprint','business','core']){
       const el=groups[key],a=key===zone?alpha:0;el.style.opacity=a;el.inert=a<.03;el.setAttribute('aria-hidden',String(a<.03));
     }
+    updateMobileStory(t,zone,next);
   }
+
+  // Phone scenes keep the model large and put only the useful state in the dock.
+  const mobileStageUI=document.createElement('div');
+  mobileStageUI.className='mobile-stage-ui';mobileStageUI.hidden=true;
+  mobileStageUI.innerHTML=`<aside class="mobile-console" id="mobile-console" aria-label="제품 동작 예시">
+    <div class="mobile-console-kicker"><span data-mobile-category></span><span><i></i>시연</span></div>
+    <div class="mobile-console-body"><div class="mobile-console-message"><strong data-mobile-title></strong><span data-mobile-note></span></div><div class="mobile-console-value" data-mobile-value></div><a class="mobile-console-link" href="product-orbis.html" aria-label="ORBIS 상세 보기">↗</a></div>
+    <div class="mobile-console-track" aria-hidden="true"></div>
+  </aside><nav class="mobile-chapters" aria-label="제품 장면 탐색">${chapters.map((p,i)=>`<a href="#${p.id}" data-mobile-chapter="${i}" style="--c:${p.color}" aria-label="${p.name} 장면 보기">${symbol(p)}<span class="mobile-chapter-line"></span></a>`).join('')}</nav>`;
+  document.querySelector('#story-ui').append(mobileStageUI);
+  const mobileConsole=mobileStageUI.querySelector('.mobile-console'),mobileCategory=mobileStageUI.querySelector('[data-mobile-category]'),mobileTitle=mobileStageUI.querySelector('[data-mobile-title]'),mobileNote=mobileStageUI.querySelector('[data-mobile-note]'),mobileValue=mobileStageUI.querySelector('[data-mobile-value]'),mobileTrack=mobileStageUI.querySelector('.mobile-console-track'),mobileDetail=mobileStageUI.querySelector('.mobile-console-link');
+  const mobileConfigs={
+    orbis:{label:'ORBIS / LIFECYCLE',steps:['컨설팅 · 설계','구축 · 배포','운영 · 관리','최적화 · 고도화'],note:'설계부터 운영까지, 하나로.'},
+    fractos:{label:'FRACTOS / RESOURCE',steps:['필요한 자원, 자동으로.'],note:'비전 연구팀 · 학습 워크로드'},
+    fabrix:{label:'FABRIX / CONTEXT',steps:['인프라 구조 확인','연관 이벤트 연결','운영 맥락 확인'],note:'구조와 상태, 작업을 연결합니다.'},
+    stratos:{label:'STRATOS / METERING',steps:['사용량 계측','팀별 예산 확인','배분 기준 연결'],note:'사용한 자원을 같은 기준으로.'},
+    agentic:{label:'AGENTIC AI / APPROVAL',steps:['운영 요청','사람의 승인','승인 후 실행'],note:'사람의 판단과 자동화를 함께.'},
+    security:{label:'AI 보안 / TRUST',steps:['DPU 무결성 확인','보호 상태 확인','변경과 승인 대조'],note:'호스트 밖에서 확인하는 신뢰.'}
+  };
+  let mobileProduct=null,mobileIndex=-1,mobileLastClock=null,mobileElapsed=0,mobileLastPhase=-1,mobileLastCount=-1,mobileMotionJob=null,mobileIsShowing=false;
+  const phoneScene=()=>innerWidth<=700||(innerWidth<=1100&&innerHeight<=500);
+  function setMobileProduct(p,index){
+    if(mobileMotionJob){wow.jobs.delete(mobileMotionJob);mobileMotionJob.cancel();}mobileMotionJob=null;
+    mobileProduct=p;mobileIndex=index;mobileElapsed=0;mobileLastClock=null;mobileLastPhase=-1;mobileLastCount=-1;
+    if(!p){mobileStageUI.hidden=true;mobileIsShowing=false;return;}
+    const config=mobileConfigs[p.id];
+    mobileCategory.textContent=config.label;mobileNote.textContent=config.note;
+    mobileDetail.href=`product-${p.id}.html`;mobileDetail.setAttribute('aria-label',`${p.name} 상세 보기`);
+    mobileStageUI.style.setProperty('--mobile-accent',p.color);
+    mobileTrack.innerHTML=Array.from({length:p.id==='fractos'?8:config.steps.length},(_,i)=>`<span data-mobile-segment="${i}"></span>`).join('');
+    businessCopy.dataset.mobileChapter=`${String(index+1).padStart(2,'0')} / 06`;
+    mobileStageUI.querySelectorAll('[data-mobile-chapter]').forEach((el,i)=>{if(i===index)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');});
+    tickMobileScene(state.clock||0);
+  }
+  function tickMobileScene(clock){
+    if(!mobileProduct||!phoneScene())return;
+    const config=mobileConfigs[mobileProduct.id];
+    if(document.hidden||wow.paused){mobileLastClock=clock;}else{
+      if(mobileLastClock!==null)mobileElapsed+=Math.max(0,Math.min(100,clock-mobileLastClock));
+      mobileLastClock=clock;
+    }
+    const phase=reduced?0:Math.floor(mobileElapsed/2600)%config.steps.length;
+    if(mobileProduct.id==='fractos'){
+      const count=state.assignmentBlend.filter(m=>m.value>=.5).length;
+      if(count!==mobileLastCount){
+        mobileTitle.textContent=state.operationDirection<0?'남는 자원은 다시 풀로.':count>4?'작업에 맞춰 확장.':'필요한 자원, 자동으로.';
+        mobileValue.innerHTML=`<b>${count}</b><small>/ 8 GPU</small>`;
+        mobileTrack.querySelectorAll('span').forEach((el,i)=>el.classList.toggle('is-on',i<count));
+        mobileLastCount=count;
+      }
+    }else if(phase!==mobileLastPhase){
+      mobileTitle.textContent=config.steps[phase];mobileValue.innerHTML=`<b>${String(phase+1).padStart(2,'0')}</b><small>/ ${String(config.steps.length).padStart(2,'0')}</small>`;
+      mobileTrack.querySelectorAll('span').forEach((el,i)=>el.classList.toggle('is-on',i<=phase));
+      if(!reduced&&!wow.paused){
+        if(mobileMotionJob){wow.jobs.delete(mobileMotionJob);mobileMotionJob.cancel();}
+        const target=mobileProduct.id==='orbis'?{serviceStep:phase}:mobileProduct.id==='agentic'?{workflow:phase/2}:mobileProduct.id==='fabrix'?{inspect:phase===1?1:0}:mobileProduct.id==='stratos'?{budget:phase/2}:null;
+        if(target)mobileMotionJob=keepMotion(animate(state,{...target,duration:800,ease:'inOut(3)'}));
+      }
+      mobileLastPhase=phase;
+    }
+  }
+  function updateMobileStory(t,zone,next){
+    if(document.body.dataset.mobileZone!==zone)document.body.dataset.mobileZone=zone;
+    const showing=phoneScene()&&zone==='business'&&next>=0&&!document.body.classList.contains('story-ended');
+    if(showing!==mobileIsShowing){mobileStageUI.hidden=!showing;mobileIsShowing=showing;}
+    if(!showing)return;
+    const start=chapterStarts[next],end=chapterStarts[next+1]||14600;
+    mobileStageUI.style.setProperty('--mobile-progress',Math.max(0,Math.min(1,(t-start)/(end-start))));
+    tickMobileScene(state.clock||0);
+  }
+  let mobileMode=phoneScene();
+  addEventListener('resize',()=>{
+    const nextMode=phoneScene();
+    if(mobileMode&&!nextMode){
+      if(mobileMotionJob){wow.jobs.delete(mobileMotionJob);mobileMotionJob.cancel();mobileMotionJob=null;}
+      state.inspect=0;state.budget=0;state.workflow=0;state.serviceStep=0;
+    }
+    mobileMode=nextMode;updateMobileStory(state.progress,lastZone,active);
+  });
+  window.WeaverMobile={tick:tickMobileScene};
 
   const names=['클러스터 / 통합 구성','외함 / 분리','랙 / 연결 구조','GPU / 자원 분리','자원 구조 / 2D 도면','ORBIS / 전 주기 서비스','FRACTOS / 자원 할당','FABRIX / 통합 관제','STRATOS / 정산 · 예산','Agentic AI / 승인 · 실행','AI 보안 / 노드 보호','WEAVER / 공통 기반'];
   $('#products-menu').innerHTML=products.map(p=>`<a href="product-${p.id}.html" style="color:${p.color}">${symbol(p)}<span>${p.name}<small>${p.summary}</small></span><span class="arrow">↗</span></a>`).join('');
@@ -1177,12 +1365,12 @@ footer .footer-motion-toggle span{font-size:12px}
   
   function switchProduct(i){
     if(active===i)return;releaseProductMotion();active=i;
-    if(i<0){panel.hidden=true;widget.hidden=true;return;}
+    if(i<0){panel.hidden=true;widget.hidden=true;setMobileProduct(null,-1);return;}
     state.allocation=(state.assignedCount-4)/4;state.inspect=0;state.budget=0;state.workflow=0;state.protected=1;state.serviceStep=0;
     const p=chapters[i];document.documentElement.style.setProperty('--accent',p.color);
     businessCopy.innerHTML=`<span class="eyebrow mono">${p.tag}</span><div class="product-heading">${symbol(p)}<h2>${p.name}</h2></div><p>${p.description}</p><ul class="product-links">${p.links.map((x,j)=>`<li><a href="product-${p.id}.html#feature-${j+1}"><span class="arrow">→</span>${x}</a></li>`).join('')}</ul>`;
     panel.innerHTML=panelContent(p);panel.hidden=false;widget.hidden=false;
-    dockBusiness(i);productSignature(p);if(p.id==='fractos')setupAllocation();
+    dockBusiness(i);productSignature(p);if(p.id==='fractos')setupAllocation();setMobileProduct(p,i);
     animate(businessCopy,{y:[12,0],duration:350,ease:'out(3)'});animate(panel,{opacity:[0,1],y:[12,0],duration:350,ease:'out(3)'});
     animate('.product-links li',{opacity:[0,1],x:[-8,0],delay:stagger(100,{start:150}),duration:250,ease:'out(3)'});
     if(p.id==='fabrix'){const path=$('.health-spark path');animate(svg.createDrawable(path),{draw:['0 0','0 1'],duration:900,ease:'inOut(2)'});}
