@@ -451,6 +451,71 @@
 @media(max-width:370px){.detail-layout .meter-metric{padding:14px 8px}.detail-layout .meter-metric dd>span,.detail-layout .metric-all dd>span{font-size:24px}.detail-layout .meter-focal strong{font-size:44px}.detail-layout .stratos-meter-story h3{font-size:19px}}
 /* The fixed GNB is accounted for by each section's scroll margin. */
 html{scroll-padding-top:0}
+/* The primary CTA occupies the same measured Flex hero button slot. */
+.detail-layout .reference-hero-actions>button{display:flex;align-items:center;justify-content:center;gap:4px;font-family:inherit;font-weight:700;font-size:17px;line-height:normal;height:68px;min-height:68px;padding:24px 28px;border:0;border-radius:16px;white-space:nowrap;flex:0 0 auto;letter-spacing:-.02em}
+.detail-layout .detail-next-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:36px}
+.detail-layout .detail-next-actions>button{font:inherit;font-size:17px;font-weight:650;border:0;cursor:pointer;margin:0}
+.detail-layout .detail-next-actions>a{margin:0}
+@media(max-width:834px){.detail-layout .reference-hero-actions>button{width:100%}.detail-layout .detail-next-actions{flex-direction:column;align-items:stretch}.detail-layout .detail-next-actions>*{width:100%;justify-content:center}}
+/* Native HTML exhibits replace STRATOS raster screens. All product UI is text,
+   CSS and semantic read-only data; there are no inputs or operational buttons. */
+.detail-layout .stratos-product-exhibit{margin:84px 0 0;min-width:0}
+.detail-layout .exhibit-app{background:#101113;color:#eceef0;border:1px solid #2d3034;border-radius:16px;overflow:hidden;font-family:Pretendard,sans-serif;letter-spacing:-.02em}
+.detail-layout .exhibit-topline{min-height:54px;padding:14px 26px;border-bottom:1px solid #2d3034;display:flex;align-items:center;gap:28px;font-size:12px;background:#161719;color:#c1c5c9}
+.detail-layout .exhibit-topline>span:first-child{font-weight:700;letter-spacing:.08em;color:#f4f4f4;display:flex;align-items:center;gap:8px}
+.detail-layout .exhibit-topline i{width:8px;height:8px;border-radius:50%;background:#b7ff54}
+.detail-layout .exhibit-topline small{margin-left:auto;font-size:11px;color:#949ba3}
+.detail-layout .exhibit-body{padding:30px}
+.detail-layout .exhibit-breadcrumb{font-size:11px;color:#8f969f;margin-bottom:20px}
+.detail-layout .exhibit-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:28px}
+.detail-layout .exhibit-heading h3{margin:0;color:#f5f6f7;font-size:28px;line-height:1.3;font-weight:650}
+.detail-layout .exhibit-heading p{font-size:13px;line-height:1.6;color:#929aa4;margin:10px 0 0}
+.detail-layout .exhibit-scope{flex:none;font-size:11px;padding:7px 10px;border:1px solid #34383d;border-radius:6px;color:#b6bdc5;white-space:nowrap}
+.detail-layout .exhibit-summary{display:grid;grid-template-columns:1.3fr 1.3fr .8fr;border:1px solid #30343a;border-radius:10px;margin-bottom:28px;background:#191b1e}
+.detail-layout .exhibit-summary>div{padding:22px;min-width:0}.detail-layout .exhibit-summary>div+div{border-left:1px solid #30343a}
+.detail-layout .exhibit-summary span{display:block;font-size:12px;color:#a5adb7;margin-bottom:12px}
+.detail-layout .exhibit-summary strong{font-size:29px;line-height:1.25;font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.detail-layout .exhibit-summary small{font-size:11px;font-weight:500;color:#89939f;margin-left:6px;letter-spacing:0}
+.detail-layout .exhibit-project-labels,.detail-layout .exhibit-project-row{display:grid;grid-template-columns:1.2fr 1fr 1.6fr .8fr;gap:20px;align-items:center;padding:17px 16px}
+.detail-layout .exhibit-project-labels{font-size:11px;color:#919aa6;padding-top:0;padding-bottom:12px;border-bottom:1px solid #353a40}
+.detail-layout .exhibit-project-row{border-bottom:1px solid #272c31;transition:background .45s;min-height:94px}
+.detail-layout .exhibit-project-row.is-current{background:#ffffff07}
+.detail-layout .exhibit-project-name b{display:block;font-size:14px;font-weight:600}.detail-layout .exhibit-project-name>span{display:block;font-size:11px;color:#87919d;margin-top:7px}
+.detail-layout .exhibit-resource{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#87919d}.detail-layout .exhibit-resource b{font-size:13px;font-weight:500;color:#cdd3db;margin-left:5px}
+.detail-layout .exhibit-project-budget>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:11px;font-variant-numeric:tabular-nums;color:#b9c1cc}
+.detail-layout .exhibit-project-budget b{font-size:12px;font-weight:550}
+.detail-layout .exhibit-budget-track{height:5px;background:#303740;border-radius:10px;overflow:hidden;margin-top:12px}
+.detail-layout .exhibit-budget-track i{display:block;height:100%;background:#929faa;border-radius:10px;transition:background .45s}.detail-layout .is-current .exhibit-budget-track i{background:#b7ff54}
+.detail-layout .exhibit-budget-state{font-size:10px;line-height:1.5;color:#a1abb7;border:1px solid #39414a;border-radius:5px;padding:5px 7px;justify-self:start;white-space:nowrap}.detail-layout .exhibit-budget-state.is-over{color:#f9b899;border-color:#72503f;background:#4b312421}
+.detail-layout .exhibit-policy{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px;color:#939dab;font-size:11px;line-height:1.7}
+.detail-layout .exhibit-policy b{color:#cbd3dd;font-weight:500;margin-left:7px}
+.detail-layout .stratos-product-exhibit figcaption{font-size:11px;line-height:1.6;margin-top:16px;color:#797c82}
+.detail-layout .exhibit-settings-tabs{display:flex;gap:28px;border-bottom:1px solid #30353b;font-size:13px;color:#909aa5;margin-bottom:28px}
+.detail-layout .exhibit-settings-tabs>span{padding:0 0 14px}.detail-layout .exhibit-settings-tabs .is-active{color:#e8edf4;border-bottom:2px solid #b7ff54}
+.detail-layout .exhibit-setting-section{padding:0 0 28px}.detail-layout .exhibit-setting-section h4{font-size:14px;font-weight:600;line-height:1.5;margin:0 0 8px;color:#e5ebf3}
+.detail-layout .exhibit-setting-section p{font-size:12px;line-height:1.7;color:#929eaa;margin:0}
+.detail-layout .exhibit-rates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.detail-layout .exhibit-rate{padding:19px 16px;border:1px solid #383f48;border-radius:8px;background:#191c21;min-width:0}
+.detail-layout .exhibit-rate>span{font-size:12px;color:#b9c3cf}.detail-layout .exhibit-rate>div{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;margin-top:16px}
+.detail-layout .exhibit-rate strong{font-size:27px;font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.detail-layout .exhibit-rate small{font-size:14px;color:#9ca9b6}.detail-layout .exhibit-rate>div>span{font-size:10px;color:#82909f;white-space:nowrap}
+.detail-layout .exhibit-setting-columns{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding-top:28px;border-top:1px solid #2d343d}
+.detail-layout .exhibit-choice{display:flex;gap:16px;font-size:13px;margin:20px 0;color:#8d99a7}
+.detail-layout .exhibit-choice>span{display:flex;align-items:center;gap:7px}.detail-layout .exhibit-choice i{width:14px;height:14px;border:1px solid #617080;border-radius:50%}
+.detail-layout .exhibit-choice .is-selected{color:#e5edf6}.detail-layout .exhibit-choice .is-selected i{border:4px solid #b7ff54}
+.detail-layout .exhibit-enabled{font-size:10px;line-height:1.5;font-weight:500;border:1px solid #465643;color:#c0d9b1;border-radius:4px;padding:3px 7px;margin-left:8px}
+.detail-layout .exhibit-report-day{display:flex;align-items:baseline;gap:9px;font-size:13px;color:#aebcc9;margin:18px 0}.detail-layout .exhibit-report-day b{font-size:25px;color:#f0f4f9;font-weight:600}.detail-layout .exhibit-report-day>span{margin-left:4px;font-variant-numeric:tabular-nums}
+.detail-layout .exhibit-budget-policy{display:flex;justify-content:space-between;gap:24px;align-items:center;border-top:1px solid #2d343d;padding-top:26px}
+.detail-layout .exhibit-thresholds{display:flex;gap:30px}.detail-layout .exhibit-thresholds>span{font-size:11px;color:#a5b1be;white-space:nowrap}.detail-layout .exhibit-thresholds b{display:block;font-size:26px;font-weight:600;color:#eef3fa;margin-top:5px}.detail-layout .exhibit-thresholds small{font-size:12px;margin-left:3px}
+@media(max-width:1100px){.detail-layout .exhibit-rates{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-layout .exhibit-project-labels,.detail-layout .exhibit-project-row{gap:14px;padding-left:8px;padding-right:8px}.detail-layout .exhibit-summary>div{padding:18px}.detail-layout .exhibit-summary strong{font-size:24px}.detail-layout .exhibit-summary small{display:block;margin:5px 0 0}}
+@media(max-width:700px){
+ .detail-layout .stratos-product-exhibit{margin-top:48px}.detail-layout .exhibit-app{border-radius:12px}.detail-layout .exhibit-topline{padding:13px 18px;gap:12px;min-height:50px;font-size:10px}.detail-layout .exhibit-topline small{font-size:9px}.detail-layout .exhibit-topline>span:nth-child(2){display:none}
+ .detail-layout .exhibit-body{padding:22px 18px}.detail-layout .exhibit-breadcrumb{font-size:10px;margin-bottom:18px}.detail-layout .exhibit-heading{display:block;margin-bottom:24px}.detail-layout .exhibit-heading h3{font-size:24px}.detail-layout .exhibit-heading p{font-size:12px;line-height:1.7}.detail-layout .exhibit-scope{display:inline-block;margin-top:14px;font-size:10px;padding:5px 8px}
+ .detail-layout .exhibit-summary{grid-template-columns:1fr 1fr;margin-bottom:26px}.detail-layout .exhibit-summary>div{padding:15px 12px}.detail-layout .exhibit-summary>div:nth-child(3){grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;border-left:0;border-top:1px solid #30343a}.detail-layout .exhibit-summary>div:nth-child(3)>span{margin:0}.detail-layout .exhibit-summary strong{font-size:24px}.detail-layout .exhibit-summary small{font-size:10px}.detail-layout .exhibit-summary span{font-size:10px;line-height:1.5}.detail-layout .exhibit-summary>div:nth-child(3) small{display:inline;margin-left:4px}
+ .detail-layout .exhibit-project-labels{display:none}.detail-layout .exhibit-project-row{grid-template-columns:1fr auto;gap:16px 12px;padding:20px 10px;min-height:0}.detail-layout .exhibit-project-name b{font-size:15px}.detail-layout .exhibit-project-name>span{font-size:10px}.detail-layout .exhibit-resource{font-size:10px}.detail-layout .exhibit-project-budget{grid-column:1/-1;grid-row:2}.detail-layout .exhibit-budget-state{grid-column:1/-1;font-size:10px}.detail-layout .exhibit-project-budget>div:first-child{font-size:11px}.detail-layout .exhibit-budget-track{height:6px}.detail-layout .exhibit-policy{display:grid;gap:7px;font-size:10px;line-height:1.8}
+ .detail-layout .exhibit-settings-tabs{gap:20px;font-size:12px;margin-bottom:24px}.detail-layout .exhibit-rates{gap:10px;margin-top:18px}.detail-layout .exhibit-rate{padding:16px 12px}.detail-layout .exhibit-rate>div{margin-top:12px}.detail-layout .exhibit-rate strong{font-size:26px}.detail-layout .exhibit-rate>div>span{flex-basis:100%;font-size:10px;margin-top:3px}
+ .detail-layout .exhibit-setting-columns{grid-template-columns:1fr;gap:0;padding-top:24px}.detail-layout .exhibit-setting-columns>.exhibit-setting-section+div{border-top:1px solid #2d343d;padding-top:24px}.detail-layout .exhibit-budget-policy{display:block}.detail-layout .exhibit-thresholds{margin-top:20px;gap:38px}.detail-layout .stratos-product-exhibit figcaption{font-size:10px}
+}
+@media(max-width:370px){.detail-layout .exhibit-summary strong{font-size:20px}}
 
 /* Measured from Flex employee-management GNB: 68/54px bar, 1024px content,
    24px primary titles, 11px group labels, full-width dropdown and mobile sheet. */
@@ -503,3 +568,9 @@ html.weaver-navigation-open{overflow:hidden}
 @media(prefers-reduced-motion:no-preference){header.weaver-gnb .weaver-gnb-panel:not([hidden]){animation:weaver-menu-in .2s cubic-bezier(.2,.7,.3,1)}@keyframes weaver-menu-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}}
 /* Keep the same bar geometry in the three existing page style systems. */
 header.weaver-gnb{padding:0!important;height:var(--gnb-height)!important;background:#111!important;color:#fff!important}
+/* Inquiry is a presentation-only button until the user supplies a destination. */
+header.weaver-gnb .weaver-gnb-inquiry{margin-left:auto;flex:none;appearance:none;border:1px solid #fff;border-radius:8px;padding:8px 14px;min-height:36px;background:#fff;color:#111;font-family:inherit;font-size:14px;font-weight:650;line-height:18px;letter-spacing:-.02em;white-space:nowrap;cursor:pointer;transition:background .18s}
+header.weaver-gnb .weaver-gnb-inquiry:hover{background:#e7e7e7}
+[data-inquiry]{font-family:inherit;cursor:pointer}
+@media(max-width:834px){header.weaver-gnb .weaver-gnb-bar{gap:10px}header.weaver-gnb nav.weaver-gnb-triggers{order:3;flex:none}header.weaver-gnb .weaver-gnb-brand{display:none}header.weaver-gnb .weaver-gnb-inquiry{order:2;min-height:36px;padding:8px 12px;font-size:13px}}
+@media(max-width:834px){header.weaver-gnb nav.weaver-gnb-triggers>.weaver-gnb-brand{display:none}}
