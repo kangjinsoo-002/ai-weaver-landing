@@ -85,5 +85,18 @@
   let waiting=false;
   function reading(){waiting=false;let index=0;const headerBottom=document.querySelector('.product-header').getBoundingClientRect().bottom,navBox=subnav.getBoundingClientRect(),readingLine=(navBox.top<=headerBottom+1?navBox.bottom:headerBottom)+32;sections.forEach((s,i)=>{if(s.getBoundingClientRect().top<readingLine)index=i;});links.forEach((a,i)=>{if(i===index)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});const max=document.documentElement.scrollHeight-innerHeight;subnav.style.setProperty('--reading',(max>0?scrollY/max*100:0)+'%');}
   addEventListener('scroll',()=>{if(!waiting){waiting=true;requestAnimationFrame(reading);}},{passive:true});addEventListener('resize',reading);
+  const screenDialog=document.querySelector('.screen-dialog');
+  if(screenDialog){
+    let opener=null;
+    document.querySelectorAll('[data-screen-src]').forEach(button=>button.addEventListener('click',()=>{
+      opener=button;const img=screenDialog.querySelector('img');img.src=button.dataset.screenSrc;img.alt=button.dataset.screenTitle+' 전체 화면';
+      screenDialog.querySelector('h2').textContent=button.dataset.screenTitle;screenDialog.showModal();document.documentElement.style.overflow='hidden';
+      const positionImage=()=>{screenDialog.querySelector('.screen-dialog-body').scrollLeft=innerWidth<=700?190:0;};
+      if(img.complete)positionImage();else img.addEventListener('load',positionImage,{once:true});
+    }));
+    screenDialog.querySelector('[data-screen-close]').addEventListener('click',()=>screenDialog.close());
+    screenDialog.addEventListener('click',e=>{if(e.target===screenDialog){const r=screenDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)screenDialog.close();}});
+    screenDialog.addEventListener('close',()=>{document.documentElement.style.removeProperty('overflow');opener?.focus({preventScroll:true});});
+  }
   sync();reading();
 })();
