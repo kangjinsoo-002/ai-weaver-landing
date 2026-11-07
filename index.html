@@ -210,6 +210,69 @@ footer .footer-motion-toggle span{font-size:12px}
 }
 @media(max-width:370px){.product-tile h3{font-size:18px}}
 
+/* A short phone must fit the copy, live demo and chapter control together. */
+@media(max-width:700px){
+ .copy-rail>.floating-copy{max-width:calc(100% - 48px)}
+ .hero-copy p,.core-copy p{max-width:100%;width:auto;word-break:keep-all}
+ .business-copy p,.journey-copy p,.blueprint-copy p{word-break:keep-all}
+ .side-panel{max-width:calc(100% - 48px)}
+ .panel-title{gap:8px;min-width:0;flex-wrap:wrap;line-height:1.45}
+ .panel-title>span:first-child{min-width:0;word-break:keep-all}
+ .panel-row{gap:12px}.panel-row>b{min-width:0;text-align:right;overflow-wrap:break-word}
+ .products-menu{max-height:calc(100svh - 88px);overflow-y:auto;overscroll-behavior:contain}
+ .hero-footnote{display:none}
+ .operation-markers{display:none}
+ body:has(.side-panel:not([hidden])) #model-caption{display:none}
+ .connections .section-heading h2{font-size:clamp(34px,10vw,48px);line-height:1.15;word-break:keep-all}
+ .connections .section-heading p,.core-band,.brand-finale h2,.brand-finale p{word-break:keep-all}
+}
+@media(max-width:700px) and (max-height:740px),(min-width:701px) and (max-width:1100px) and (max-height:500px){
+ .side-panel,.side-panel.resource-panel{padding:10px;bottom:70px;background:#101417fa}
+ .side-panel .panel-head{margin-bottom:6px;min-height:20px}
+ .side-panel .panel-title{font-size:13px;margin-bottom:6px;line-height:1.4}
+ .side-panel .panel-row{padding:5px 0;font-size:10px;line-height:1.4}
+ .side-panel .panel-row b{font-size:10px}
+ .side-panel .panel-feedback{display:none}
+ .side-panel .panel-button{min-height:30px;padding-top:6px;font-size:10px}
+ .resource-panel .gpu-allocation{margin-top:6px}
+ .resource-panel .gpu-pool{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+ .resource-panel .gpu-token{min-height:34px;padding:4px 0;font-size:8px;line-height:1.25}
+ .resource-panel .gpu-token:before{width:18px;height:7px;margin-bottom:4px}
+ .resource-panel .gpu-target{min-height:40px;margin-top:7px;padding:6px 9px}
+ .resource-panel .gpu-target>span{font-size:11px}
+ .resource-panel .gpu-target small{font-size:9px;margin-top:3px}
+ .resource-panel .gpu-count{font-size:21px}
+ .resource-panel .gpu-help,.resource-panel .operation-readout{display:none}
+ .resource-panel .allocation-summary{font-size:10px;margin-top:8px;line-height:1.5}
+ .resource-panel .allocation-cycle{margin-top:8px;padding-top:7px;line-height:1.5}
+ .resource-panel .allocation-cycle>span:last-child{display:none}
+ .orbis-card-steps{margin:8px 0;gap:4px}
+ .side-panel .orbis-card-steps>span{padding:7px;font-size:9px}
+ .timeline-widget{bottom:20px}
+ #model-caption{bottom:25px;max-width:90px;font-size:8px}
+}
+@media(max-width:700px) and (max-height:620px),(min-width:701px) and (max-width:1100px) and (max-height:500px){
+ .resource-panel .panel-title,.resource-panel .allocation-summary{display:none}
+ .resource-panel .gpu-target small{display:none}
+ .resource-panel .gpu-count small{display:inline}
+ .resource-panel .gpu-target{min-height:32px}
+ .resource-panel .gpu-count{font-size:19px}
+}
+@media(min-width:701px) and (max-width:1100px) and (max-height:500px){
+ .site-header{height:64px;padding:0 24px}.site-header:after{left:24px;right:24px}
+ .copy-rail>.floating-copy{margin-left:24px;width:30vw;max-width:30vw}
+ .hero-copy h1{font-size:36px;line-height:1.15}.hero-copy p{width:auto;max-width:100%;font-size:13px;line-height:1.6}
+ .hero-actions{margin-top:14px}.hero-actions .button{min-height:40px}
+ .floating-copy h2,.product-heading h2{font-size:32px;line-height:1.15}
+ .floating-copy p{font-size:12px;line-height:1.6}.product-heading{gap:8px;margin-bottom:12px}
+ .product-heading .morph-mark{width:40px;height:40px}.eyebrow{font-size:9px;margin-bottom:12px}
+ .product-links,.hero-footnote,.operation-markers{display:none}
+ .side-panel,.side-panel.resource-panel{width:28vw;max-width:28vw;right:24px;bottom:64px}
+ .timeline-widget{width:28vw;right:24px;bottom:16px;height:34px}
+ body:has(.side-panel:not([hidden])) #model-caption{display:none}
+ .products-menu{max-height:calc(100svh - 82px);overflow-y:auto;overscroll-behavior:contain}
+}
+
 </style>
 </head>
 <body>
@@ -583,6 +646,51 @@ footer .footer-motion-toggle span{font-size:12px}
     });
   }
 
+  // Fit the live model between the reading copy and the mobile demo card.
+  const mobileFitPoint=new T.Vector3();
+  function fitMobileScene(){
+    const landscape=width>700&&width<=1100&&height<=500;
+    if((width>700&&!landscape)||!arrival.completed)return;
+    const p=state.progress;
+    const copy=document.querySelector(p<950?'.hero-copy':p<4500?'.journey-copy':p<6000?'.blueprint-copy':p<14600?'.business-copy':'.core-copy');
+    const copyBottom=copy?.getBoundingClientRect().bottom||100;
+    let top=Math.max(96,Math.min(height*.65,copyBottom+20)),bottom=height-64;
+    const card=document.querySelector('.side-panel');
+    if(p>=6000&&p<14600&&card&&!card.hidden)bottom=Math.min(bottom,card.getBoundingClientRect().top-18);
+    if(p>=4500&&p<6000){top=Math.max(top+58,Math.max(260,copyBottom+20)+58);bottom=height-130;}
+    let left=32,right=width-32;
+    if(landscape){
+      left=Math.max(width*.34,(copy?.getBoundingClientRect().right||width*.3)+20);top=88;bottom=height-48;
+      if(p>=6000&&p<14600&&card&&!card.hidden)right=card.getBoundingClientRect().left-20;
+      if(p>=4500&&p<6000){left=width*.38+28;right=width-48;top=154;bottom=height-112;}
+    }
+    const room=Math.max(48,bottom-top);
+    let minX=Infinity,minY=Infinity,minZ=Infinity,maxX=-Infinity,maxY=-Infinity,maxZ=-Infinity;
+    const include=(x,y,z,dx,dy,dz)=>{minX=Math.min(minX,x-dx);maxX=Math.max(maxX,x+dx);minY=Math.min(minY,y-dy);maxY=Math.max(maxY,y+dy);minZ=Math.min(minZ,z-dz);maxZ=Math.max(maxZ,z+dz);};
+    gpus.forEach(({g})=>include(g.position.x,g.position.y,g.position.z,.4*g.scale.x,.4*g.scale.x,.45*g.scale.x));
+    racks.forEach(({g})=>{if(g.visible)include(g.position.x,g.position.y,g.position.z,g.scale.x,2.3*g.scale.x,g.scale.x);});
+    if(enclosure.visible)include(0,0,0,3.4+state.open*2.3,2.5+state.open*1.7,1.3+state.open*2.3);
+    if(shield.visible)include(0,0,0,3.7,2.65,1.6);
+    camera.updateMatrixWorld();
+    const bounds=()=>{
+      root.updateMatrixWorld(true);
+      let left=Infinity,right=-Infinity,upper=Infinity,lower=-Infinity;
+      for(const x of [minX,maxX])for(const y of [minY,maxY])for(const z of [minZ,maxZ]){
+        mobileFitPoint.set(x,y,z);root.localToWorld(mobileFitPoint);mobileFitPoint.project(camera);
+        const sx=(mobileFitPoint.x+1)*width/2,sy=(1-mobileFitPoint.y)*height/2;
+        left=Math.min(left,sx);right=Math.max(right,sx);upper=Math.min(upper,sy);lower=Math.max(lower,sy);
+      }
+      return {left,right,upper,lower};
+    };
+    let b=bounds();
+    const factor=Math.min(1,(right-left)/(b.right-b.left),room/(b.lower-b.upper))*.96;
+    root.scale.multiplyScalar(factor);b=bounds();
+    const unit=2*camera.position.z*Math.tan(camera.fov*Math.PI/360)/height;
+    root.position.x+=((left+right)/2-(b.left+b.right)/2)*unit;
+    root.position.y-=((top+bottom)/2-(b.upper+b.lower)/2)*unit;
+    root.updateMatrixWorld(true);
+  }
+
   const engineeringHost=document.getElementById('engineering-overlay');
   engineeringHost.innerHTML=`<svg aria-hidden="true"><g class="sheet-frame"></g><g class="sheet-dimensions"></g><g class="sheet-index"></g><g class="sheet-detail"></g><g class="sheet-titleblock"></g></svg>`;
   const engineeringSVG=engineeringHost.querySelector('svg'),sheetFrame=engineeringHost.querySelector('.sheet-frame'),sheetDims=engineeringHost.querySelector('.sheet-dimensions'),sheetIndex=engineeringHost.querySelector('.sheet-index'),sheetDetail=engineeringHost.querySelector('.sheet-detail'),sheetTitle=engineeringHost.querySelector('.sheet-titleblock');
@@ -594,9 +702,10 @@ footer .footer-motion-toggle span{font-size:12px}
     if(p<4400||p>6050)return;
     const cache=[Math.round(p),width,height].join(':');if(cache===sheetLast)return;sheetLast=cache;
     engineeringSVG.setAttribute('viewBox',`0 0 ${width} ${height}`);
-    const inset=width<700?24:width<1050?32:64,wide=width>=1200,detail=width>=900;
+    const inset=width<700?24:width<1050?32:64,wide=width>=1200,detail=width>=900&&height>500;
     const copyBottom=document.querySelector('.blueprint-copy')?.getBoundingClientRect().bottom||0;
-    const x=wide?Math.max(inset+300,width*.30):inset,y=wide?128:Math.max(300,height*.37,copyBottom+24),right=width-inset,bottom=height-72,w=right-x;
+    const landscape=width>700&&width<=1100&&height<=500;
+    const x=wide?Math.max(inset+300,width*.30):landscape?width*.38:inset,y=wide?128:landscape?96:width<700?Math.max(260,copyBottom+20):Math.max(300,height*.37,copyBottom+24),right=width-inset,bottom=height-72,w=right-x;
     const label=(tx,ty,text,cls='',anchor='start')=>`<text x="${tx}" y="${ty}" class="${cls}" text-anchor="${anchor}">${text}</text>`;
     sheetFrame.innerHTML=`<path class="fine" d="M${x} ${y+28}V${y}H${right}V${bottom}H${x}V${y+28}H${right}"/>${label(x+12,y+18,'GPU RESOURCE PLANE','sheet-heading')}${label(right-12,y+18,wide?'01 / ORTHOGRAPHIC':'01 / PLAN','sheet-note','end')}`;
     const corners=gpus.flatMap(o=>[sheetProject(o.g,-.17,0,-.315),sheetProject(o.g,.17,0,.315)]);
@@ -708,6 +817,7 @@ footer .footer-motion-toggle span{font-size:12px}
     gridLines.forEach(l=>{l.material.color.set(state.light>.5?'#777c76':'#85827e');l.material.opacity=flatten>.5?.22:.045;});
     signals.visible=arrival.completed&&(heroGate>.5||state.open>.3||featurePhase>.5)&&rt<.85;
     dots.forEach((d,i)=>{const a=(i/32)*Math.PI*2+t*.23;d.position.set(Math.cos(a)*3.9,Math.sin(a)*2.6,Math.sin(a*2+t*.2)*.6);d.scale.setScalar(featurePhase>.95&&fi===3?1.7:1);});
+    fitMobileScene();
     renderWowScene();
     renderEngineering();
     renderArrival();
@@ -999,6 +1109,7 @@ footer .footer-motion-toggle span{font-size:12px}
   // Each reading rail lets the copy approach, dock below the header, and hold.
   const readingRails=new Map();
   function dockCopy(el,start,end,lead,stop){
+    if(innerWidth>700&&innerWidth<=1100&&innerHeight<=500)stop=96;
     let rail=readingRails.get(el);
     if(!rail){rail=document.createElement('div');rail.className='copy-rail';el.before(rail);rail.append(el);readingRails.set(el,rail);}
     const range=story.offsetHeight-innerHeight;
