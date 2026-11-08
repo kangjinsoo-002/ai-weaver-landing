@@ -6,6 +6,24 @@
   const reviewPhase=/^[0-3]$/.test(reviewQuery||'')?Number(reviewQuery):null;
   const controls=[...document.querySelectorAll('[data-motion-control]')];
   const visuals=[...document.querySelectorAll('[data-motion-visual],[data-flow-visual]')].map(el=>({el,visible:false,step:reviewPhase??0,timer:null,job:null,allocationJob:null,captionJob:null,count:4,phases:Math.max(3,...[...el.querySelectorAll('[data-step]')].map(x=>Number(x.dataset.step)+1))}));
+  const refinedPage=['security','orbis','agentic'].includes(document.body.dataset.product);
+  const readingViewport=matchMedia('(max-width:700px)'),revealJobs=new Map();
+  visuals.forEach(m=>{
+    m.followReading=refinedPage&&m.el.matches('[data-concept-exhibit],[data-flow-visual]');
+    m.readingTargets=m.followReading?[...m.el.querySelectorAll('[data-step],[data-flow-step]')]:[];
+  });
+  function readingInfo(model){
+    const top=78,bottom=innerHeight-32,line=top+(bottom-top)*.44;
+    let best=null,distance=Infinity;const eligible=[];
+    for(const node of model.readingTargets){
+      const r=node.getBoundingClientRect(),shown=Math.min(r.bottom,bottom)-Math.max(r.top,top);
+      if(r.height<=0||shown<Math.min(28,r.height*.3))continue;
+      const step=Number(node.dataset.step??node.dataset.flowStep);eligible.push(step);
+      const nextDistance=Math.abs((Math.max(r.top,top)+Math.min(r.bottom,bottom))/2-line);
+      if(nextDistance<distance){distance=nextDistance;best=step;}
+    }
+    return {selected:best,eligible};
+  }
   const text=el=>el?.textContent.trim()||'';
   function description(model){
     const {el}=model,phase=model.step%model.phases;
@@ -35,7 +53,7 @@
     model.el.querySelectorAll('[data-gpu]').forEach(g=>g.classList.toggle('is-assigned',Number(g.dataset.gpu)<displayed));
     model.el.querySelectorAll('[data-allocation-count]').forEach(x=>x.textContent=displayed);
   }
-  function paint(model){
+  function paint(model,animateCaption=true){
     const {el,step}=model;el.dataset.phase=String(step);
     el.querySelectorAll('[data-step],[data-flow-step]').forEach(item=>item.classList.toggle('is-current',Number(item.dataset.step??item.dataset.flowStep)===step%model.phases));
     const expanded=step%3===1,count=expanded?8:4;
@@ -53,13 +71,21 @@
     if(title&&copy){
       const words=description(model);title.textContent=words[0];copy.textContent=words[1];
       counter.textContent=String(step%model.phases+1).padStart(2,'0')+' / '+String(model.phases).padStart(2,'0');
-      if(A&&!reduced&&reviewPhase===null&&model.visible){model.captionJob?.cancel();model.captionJob=A.animate([title,copy],{opacity:[.5,1],y:[3,0],duration:260,ease:'out(2)'});}
+      if(A&&!paused&&!reduced&&reviewPhase===null&&model.visible&&animateCaption){model.captionJob?.cancel();model.captionJob=A.animate([title,copy],{opacity:[refinedPage ? .8 : .5,1],y:[refinedPage?2:3,0],duration:refinedPage?240:260,ease:'out(2)'});}
     }
   }
   visuals.forEach(model=>{
     paint(model);
     if(A&&!reduced&&reviewPhase===null){
-      model.timer=A.createTimer({autoplay:false,duration:Number(model.el.dataset.motionDuration)||3000,loop:true,onLoop:()=>{model.step++;paint(model);}});
+      model.timer=A.createTimer({autoplay:false,duration:Number(model.el.dataset.motionDuration)||3000,loop:true,onLoop:()=>{
+        if(model.followReading){
+          if(readingViewport.matches)return;
+          const {eligible}=readingInfo(model),current=model.step%model.phases;if(!eligible.length)return;
+          let next=current;for(let offset=1;offset<=model.phases;offset++){const candidate=(current+offset)%model.phases;if(eligible.includes(candidate)){next=candidate;break;}}
+          if(next===current)return;model.step=next;
+        }else model.step++;
+        paint(model);
+      }});
       const glyph=model.el.querySelector('.hero-symbol');
       if(glyph)model.job=A.animate(glyph,{y:[-3,3,-3],rotate:['-1deg','1deg','-1deg'],duration:7500,loop:true,ease:'inOut(2)',autoplay:false});
     }
@@ -112,18 +138,32 @@
   function sync(){
     meterSync();
     const enabled=!paused&&!reduced&&!document.hidden&&reviewPhase===null;
+    if(paused&&refinedPage)for(const [node,job] of revealJobs){job.cancel();node.style.removeProperty('opacity');node.style.removeProperty('transform');revealJobs.delete(node);}
     for(const m of visuals){
-      m.el.dataset.motionMode=reduced||reviewPhase!==null?'static':paused?'paused':enabled&&m.visible?'auto':'offscreen';
-      if(enabled&&m.visible){m.timer?.resume();m.job?.resume();if(m.allocationJob&&!m.allocationJob.completed)m.allocationJob.resume();}
+      const reading=m.followReading&&readingViewport.matches,info=enabled&&m.followReading?readingInfo(m):{selected:null,eligible:[]},selected=info.selected;
+      if(enabled&&m.visible&&selected!==null&&(reading||!info.eligible.includes(m.step%m.phases))&&m.step%m.phases!==selected){
+        m.captionJob?.cancel();m.el.querySelectorAll('[data-caption-title],[data-caption-copy]').forEach(x=>{x.style.removeProperty('opacity');x.style.removeProperty('transform');});m.step=selected;paint(m,false);
+      }
+      const active=enabled&&m.visible&&(!m.followReading||selected!==null);
+      const mode=reduced||reviewPhase!==null?'static':paused?'paused':active?(reading?'reading':'auto'):'offscreen';
+      if(m.el.dataset.motionMode!==mode)m.el.dataset.motionMode=mode;
+      if(active){if(reading)m.timer?.pause();else m.timer?.resume();m.job?.resume();if(m.allocationJob&&!m.allocationJob.completed)m.allocationJob.resume();}
       else{m.timer?.pause();m.job?.pause();m.allocationJob?.pause();m.captionJob?.cancel();m.el.querySelectorAll('[data-caption-title],[data-caption-copy]').forEach(x=>{x.style.removeProperty('opacity');x.style.removeProperty('transform');});}
-      m.el.querySelectorAll('[data-caption-mode]').forEach(x=>x.textContent=reduced||reviewPhase!==null?'동작 예시':paused?'일시 정지':'자동 시연');
+      const label=reduced||reviewPhase!==null?'동작 예시':paused?'일시 정지':reading?'스크롤 따라보기':'자동 시연';
+      m.el.querySelectorAll('[data-caption-mode]').forEach(x=>{if(x.textContent!==label)x.textContent=label;});
     }
-    controls.forEach(b=>{b.setAttribute('aria-pressed',String(paused));b.disabled=reduced;b.innerHTML=(reduced?'움직임 최소화':paused?'모션 재생':'모션 정지')+' <span aria-hidden="true">'+(paused?'▷':'Ⅱ')+'</span>';});
+    controls.forEach(b=>{b.setAttribute('aria-pressed',String(paused));b.disabled=reduced;const markup=(reduced?'움직임 최소화':paused?'모션 재생':'모션 정지')+' <span aria-hidden="true">'+(paused?'▷':'Ⅱ')+'</span>';if(b.innerHTML!==markup)b.innerHTML=markup;});
   }
   const activity=new IntersectionObserver(entries=>{for(const entry of entries){const m=visuals.find(m=>m.el===entry.target);if(m)m.visible=entry.isIntersecting;}sync();},{threshold:.15});
   visuals.forEach(m=>activity.observe(m.el));controls.forEach(b=>b.addEventListener('click',()=>{paused=!paused;sync();}));document.addEventListener('visibilitychange',sync);
+  if(refinedPage){
+    let readingQueued=false;
+    function queueReading(){if(!readingQueued){readingQueued=true;requestAnimationFrame(()=>{readingQueued=false;sync();});}}
+    addEventListener('scroll',queueReading,{passive:true});
+    addEventListener('resize',queueReading);readingViewport.addEventListener('change',queueReading);
+  }
   if(A&&!reduced){
-    const reveal=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){reveal.unobserve(e.target);A.animate(e.target,{opacity:[.55,1],y:[12,0],duration:650,ease:'out(3)'});}},{threshold:.12});
+    const reveal=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){reveal.unobserve(e.target);if(refinedPage&&paused)continue;const job=A.animate(e.target,{opacity:[refinedPage ? .84 : .55,1],y:[refinedPage?8:12,0],duration:refinedPage?420:650,ease:'out(3)',onComplete:()=>revealJobs.delete(e.target)});if(refinedPage)revealJobs.set(e.target,job);}},{threshold:.12});
     document.querySelectorAll('.feature-copy,.section-heading,.role-list>div,.related-products>a').forEach(el=>reveal.observe(el));
   }
   const screenDialog=document.querySelector('.screen-dialog');
