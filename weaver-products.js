@@ -59,7 +59,7 @@
   visuals.forEach(model=>{
     paint(model);
     if(A&&!reduced&&reviewPhase===null){
-      model.timer=A.createTimer({autoplay:false,duration:3000,loop:true,onLoop:()=>{model.step++;paint(model);}});
+      model.timer=A.createTimer({autoplay:false,duration:Number(model.el.dataset.motionDuration)||3000,loop:true,onLoop:()=>{model.step++;paint(model);}});
       const glyph=model.el.querySelector('.hero-symbol');
       if(glyph)model.job=A.animate(glyph,{y:[-3,3,-3],rotate:['-1deg','1deg','-1deg'],duration:7500,loop:true,ease:'inOut(2)',autoplay:false});
     }
@@ -113,6 +113,7 @@
     meterSync();
     const enabled=!paused&&!reduced&&!document.hidden&&reviewPhase===null;
     for(const m of visuals){
+      m.el.dataset.motionMode=reduced||reviewPhase!==null?'static':paused?'paused':enabled&&m.visible?'auto':'offscreen';
       if(enabled&&m.visible){m.timer?.resume();m.job?.resume();if(m.allocationJob&&!m.allocationJob.completed)m.allocationJob.resume();}
       else{m.timer?.pause();m.job?.pause();m.allocationJob?.pause();m.captionJob?.cancel();m.el.querySelectorAll('[data-caption-title],[data-caption-copy]').forEach(x=>{x.style.removeProperty('opacity');x.style.removeProperty('transform');});}
       m.el.querySelectorAll('[data-caption-mode]').forEach(x=>x.textContent=reduced||reviewPhase!==null?'동작 예시':paused?'일시 정지':'자동 시연');
