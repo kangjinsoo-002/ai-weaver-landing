@@ -580,6 +580,11 @@ header.weaver-gnb .weaver-gnb-mobile-explore{display:none}
 @media(max-width:834px){header.weaver-gnb nav.weaver-gnb-triggers>.weaver-gnb-scenarios{display:none}header.weaver-gnb .weaver-gnb-mobile-explore{display:block;margin-bottom:30px;padding-bottom:24px;border-bottom:1px solid #ffffff25}header.weaver-gnb .weaver-gnb-mobile-explore>a{display:flex;align-items:center;justify-content:space-between;min-height:44px;color:#fff;font-size:21px;font-weight:600;text-decoration:none}header.weaver-gnb .weaver-gnb-mobile-explore span{font-size:18px;color:#9ba4b0}}
 @media(min-width:835px){header.weaver-gnb nav.weaver-gnb-triggers>.weaver-gnb-scenarios,header.weaver-gnb nav.weaver-gnb-triggers>.weaver-gnb-brand{min-height:34px}}
 
+/* Adoption guidance shares the existing desktop link and mobile explore geometry. */
+header.weaver-gnb .weaver-gnb-adoption{display:flex;align-items:center;justify-content:center;min-height:34px;padding:8px;border-radius:8px;color:#fff;font-size:14px;font-weight:600;line-height:17px;text-decoration:none;white-space:nowrap}
+header.weaver-gnb .weaver-gnb-adoption:hover,header.weaver-gnb .weaver-gnb-adoption[aria-current]{background:#ffffff1f;color:#fff}
+@media(max-width:834px){header.weaver-gnb nav.weaver-gnb-triggers>.weaver-gnb-adoption{display:none}}
+
 /* Shared code-native exhibits. Product controls are rendered as text and shapes. */
 .detail-layout .native-product-exhibit{margin:84px 0 0;min-width:0}
 .detail-layout .native-product-exhibit figcaption{font-size:11px;line-height:1.7;margin-top:16px;color:#797c82}
