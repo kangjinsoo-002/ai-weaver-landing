@@ -1,0 +1,193 @@
+/* SPDX-FileCopyrightText: 2026 MUST AI WEAVER contributors
+   SPDX-License-Identifier: Apache-2.0 */
+
+.scenarios-page .use-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding-block:64px 96px}
+.scenarios-page .use-entry,.scenarios-page .use-entry:first-child,.scenarios-page .use-entry:last-child{padding:28px;border:1px solid #e0e2e5;border-radius:20px;background:#f8f9fa;min-height:0;overflow:hidden;transition:border-color .25s,box-shadow .25s,transform .25s}
+.scenarios-page .use-entry-meta{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:12px;line-height:1.6;color:#626a75}
+.scenarios-page .use-entry-mark{display:grid;place-items:center;width:32px;height:32px;border:1px solid #dde0e5;border-radius:50%;font-size:18px;color:#3e4650;background:#fff;flex:none;transition:background .25s,color .25s}
+.scenarios-page .use-entry h2{font-size:30px;line-height:1.4;margin:22px 0 12px;font-weight:650;letter-spacing:-.045em}
+.scenarios-page .use-entry-description{font-size:14px;line-height:1.8;color:#69727d;margin:0 0 26px;word-break:keep-all;max-width:360px}
+.scenarios-page .use-entry-preview{display:flex;flex-direction:column;justify-content:space-between;height:250px;min-height:250px;flex:none;margin-top:auto;padding:20px 22px;border:1px solid #30383f;border-radius:12px;background:#151a1e;color:#ccd5df;overflow:hidden;letter-spacing:-.015em}
+.scenarios-page .card-preview-head,.scenarios-page .card-preview-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;line-height:1.6;color:#a5afba}
+.scenarios-page .card-preview-head>span:last-child{font-size:10px;border:1px solid #ffffff24;border-radius:4px;padding:2px 6px;color:#89949f}
+.scenarios-page .card-preview-foot{border-top:1px solid #ffffff16;padding-top:12px}
+.scenarios-page .card-preview-foot i{height:1px;background:#ffffff28;flex:1;max-width:80px}
+.scenarios-page .card-allocation{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;gap:14px;padding-block:22px}
+.scenarios-page .card-request{padding:14px;border:1px solid #34485f;border-radius:8px;background:#1b2734;display:grid;gap:8px}
+.scenarios-page .card-request span,.scenarios-page .card-request small{font-size:10px;color:#93a7bd}
+.scenarios-page .card-request b{font-size:15px;font-weight:550;color:#e0ebf8}
+.scenarios-page .card-flow-link{color:#6d9cce;text-align:center}
+.scenarios-page .card-chip-array{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;perspective:600px;transform:rotateX(18deg) rotateZ(-5deg);transition:transform .4s}
+.scenarios-page .card-chip-array i{height:31px;border-radius:4px;border:1px solid #46617e;background:#203349;box-shadow:0 4px 0 #0e1721}
+.scenarios-page .card-chip-array i:nth-child(-n+4){background:#4d9cff;border-color:#85bafe;box-shadow:0 4px 0 #214d80}
+.scenarios-page .card-context{display:grid;grid-template-columns:1fr 12px 1fr 12px 1fr;align-items:center;gap:8px;padding-block:22px;text-align:center}
+.scenarios-page .card-context>div{display:grid;justify-items:center;gap:8px;min-width:0}
+.scenarios-page .card-context i{width:28px;height:28px;border-radius:7px;border:1px solid #80563c;background:#31271f;box-shadow:0 4px 0 #111416;transition:background .3s}
+.scenarios-page .card-context>div:first-child i{background:#ff7d36;border-color:#ffb589}
+.scenarios-page .card-context b{font-size:13px;font-weight:550}
+.scenarios-page .card-context small,.scenarios-page .card-context>span{font-size:10px;color:#9c877a}
+.scenarios-page .card-meter{display:grid;gap:14px;padding-block:22px}
+.scenarios-page .card-meter>div{display:grid;grid-template-columns:66px 1fr;align-items:center;gap:16px;font-size:11px;color:#b2bdaa}
+.scenarios-page .card-meter i{display:block;height:9px;background:#2b3528;border-radius:3px;overflow:hidden}
+.scenarios-page .card-meter b{display:block;height:100%;width:85%;background:#b7ff54;border-radius:3px;transform-origin:left;transition:transform .4s}
+.scenarios-page .card-meter>div:nth-child(2) b{width:58%;background:#8cba55}
+.scenarios-page .card-meter>div:nth-child(3) b{width:27%;background:#56733c}
+.scenarios-page .card-review{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-block:24px}
+.scenarios-page .card-review>div{display:grid;gap:12px;padding:12px 9px;border:1px solid #31534c;border-radius:7px;background:#1a2926;text-align:center;min-width:0}
+.scenarios-page .card-review>div:nth-child(2){border-color:#6cae9d;background:#203c33}
+.scenarios-page .card-review span{font-size:10px;color:#a1c4b8}
+.scenarios-page .card-review i{width:5px;height:5px;border-radius:50%;background:#577c70;justify-self:center}
+.scenarios-page .card-review>div:nth-child(2) i{background:#26f2d5;box-shadow:0 0 0 4px #26f2d511}
+.scenarios-page .card-review b{font-size:12px;line-height:1.5;color:#cee8df;font-weight:550;word-break:keep-all}
+.scenarios-page .use-entry-products{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:20px;font-size:11px;line-height:1.6;color:#7c838c}
+.scenarios-page .use-entry-products b{font-size:11px;letter-spacing:.01em;color:#555e68;font-weight:550}
+.scenarios-page .use-entry-footer{min-height:44px;margin-top:0;padding-top:16px;border-top:1px solid #dfe2e5;font-size:13px;color:#222a33;align-items:center}
+.scenarios-page .use-entry-footer i{display:grid;place-items:center;width:24px;height:24px;font-size:18px;flex:none}
+.scenarios-page .use-entry:hover,.scenarios-page .use-entry:focus-visible{background:#f8f9fa;border-color:#a5adb8;box-shadow:0 12px 36px #152c4510;transform:translateY(-3px)}
+.scenarios-page .use-entry:hover .use-entry-mark{background:#111;color:#fff;border-color:#111}
+.scenarios-page .use-entry:hover .use-entry-footer i{transform:translateX(3px)}
+.scenarios-page .use-entry:hover .use-entry-preview i{transform:none}
+.scenarios-page .use-entry:hover .card-chip-array{transform:rotateX(0deg) rotateZ(0deg) translateY(-3px)}
+.scenarios-page .use-entry:hover .card-context>div:nth-of-type(2) i{background:#b46538}
+.scenarios-page .use-entry:hover .card-meter b{transform:scaleX(.94)}
+.scenarios-page .use-diagram{padding:28px;border-radius:18px;box-shadow:0 16px 42px #111b2810}
+.scenarios-page .use-diagram-top{padding-bottom:20px;font-size:11px;letter-spacing:0}
+.scenarios-page .use-demo-identity{display:flex;align-items:center;gap:8px;color:#dce3eb;font-size:12px;font-weight:550}
+.scenarios-page .use-demo-identity i{width:6px;height:6px;border-radius:50%;background:var(--use-accent);flex:none}
+.scenarios-page .use-demo-identity small{font-size:10px;color:#8d9aa9;font-weight:400;border-left:1px solid #ffffff25;padding-left:10px;margin-left:3px}
+.scenarios-page .use-diagram figcaption{min-height:130px;margin-top:22px;padding:22px;border:1px solid #ffffff12;border-radius:10px;background:#ffffff04}
+.scenarios-page .use-diagram figcaption strong{font-size:18px}
+.scenarios-page .use-diagram figcaption p{font-size:13px;color:#a1afbf}
+.scenarios-page .use-check{border:1px solid #e1e4e8;border-radius:14px;background:#f8f9fa;padding:24px;margin-top:24px}
+.scenarios-page .use-check li:before{content:'';width:5px;height:5px;border-radius:50%;background:#8a96a4;top:10px}
+
+.adoption-page .guide-prepare{grid-template-columns:1fr;gap:40px}
+.adoption-page .guide-prepare>div{display:grid;grid-template-columns:1fr 1fr;column-gap:60px;align-items:end}
+.adoption-page .guide-prepare .guide-eyebrow{grid-column:1/-1}
+.adoption-page .guide-prepare h2{margin-bottom:0}
+.adoption-page .guide-prepare>div>p{margin:0}
+.adoption-page .guide-prepare ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.adoption-page .guide-prepare .prepare-card{display:flex;flex-direction:column;gap:0;min-width:0;padding:26px;border:1px solid #e0e3e8;border-radius:18px;background:#f8f9fa;transition:border-color .25s,box-shadow .25s}
+.adoption-page .guide-prepare .prepare-number{display:block;width:32px;height:32px;padding:0;line-height:32px;text-align:center;border:1px solid #dce1e8;border-radius:8px;background:#fff;color:#697788;font-size:11px;margin-bottom:28px}
+.adoption-page .guide-prepare h3{font-size:21px;letter-spacing:-.04em;margin-bottom:12px}
+.adoption-page .guide-prepare li p{font-size:14px;line-height:1.8;margin:0;color:#687586}
+.adoption-page .prepare-card>div:not(.prepare-preview){margin-bottom:28px}
+.adoption-page .guide-prepare li p br{display:none}
+.adoption-page .prepare-preview{height:158px;min-height:158px;flex:none;padding:20px;margin-top:auto;border:1px solid #e0e4ea;border-radius:10px;background:#fff;min-width:0;display:grid;align-content:center}
+.adoption-page .prepare-infra{grid-template-columns:1fr 20px 1fr;gap:10px;align-items:center}
+.adoption-page .prepare-infra>div{display:grid;gap:7px;min-width:0}
+.adoption-page .prepare-infra span,.adoption-page .prepare-infra small{font-size:10px;color:#7b8797;line-height:1.6}
+.adoption-page .prepare-infra i{height:14px;border:1px solid #b5c5d9;border-radius:3px;background:#e8eef6;position:relative}
+.adoption-page .prepare-infra i:before{content:'';position:absolute;width:3px;height:3px;border-radius:50%;background:#6794cd;right:6px;top:4px}
+.adoption-page .prepare-infra>div:last-child{padding:12px 9px;border:1px solid #cbd7e6;border-radius:7px;background:#f4f7fb}
+.adoption-page .prepare-infra b{font-size:12px;font-weight:550;color:#4d617a;line-height:1.5}
+.adoption-page .prepare-infra .prepare-bridge{font-size:16px;color:#9babc0;text-align:center}
+.adoption-page .prepare-priority{gap:14px}
+.adoption-page .prepare-priority>div{display:grid;grid-template-columns:5px 1fr auto;align-items:center;gap:8px;font-size:10px;line-height:1.7;min-width:0}
+.adoption-page .prepare-priority i{width:5px;height:5px;border-radius:50%;background:#bbc3cf}
+.adoption-page .prepare-priority>div:first-child i{background:#5686c8;box-shadow:0 0 0 3px #5686c810}
+.adoption-page .prepare-priority span{color:#697788}
+.adoption-page .prepare-priority b{font-size:9px;font-weight:500;color:#7b8899;border:1px solid #e2e7ed;border-radius:4px;padding:2px 5px;background:#f7f9fb}
+.adoption-page .prepare-scope>div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #e5e8ed;padding:9px 0;font-size:10px;line-height:1.6;color:#8a94a3}
+.adoption-page .prepare-scope>div:last-child{border:0}
+.adoption-page .prepare-scope b{font-size:11px;font-weight:500;color:#536275}
+.adoption-page .guide-stage-content{background:#fff;border:1px solid #dfe3e8;border-radius:18px;padding:0;overflow:hidden;box-shadow:0 10px 30px #1d355208}
+.adoption-page .guide-review-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 28px;border-bottom:1px solid #e5e8ed;font-size:13px;font-weight:600;color:#344256}
+.adoption-page .guide-review-header small{font-size:11px;font-weight:400;color:#8290a2}
+.adoption-page .guide-stage dl{margin:0;padding:0 28px}
+.adoption-page .guide-stage dl>div{padding:24px 0;border-top:0;border-bottom:1px solid #e8ebef;gap:20px}
+.adoption-page .guide-stage dl>div:last-child{border-bottom:0}
+.adoption-page .guide-stage dt{font-size:13px;color:#3a485b}
+.adoption-page .guide-stage dd{font-size:14px;color:#6e7d90}
+.adoption-page .guide-outcome{border:0;border-top:1px solid #e3e8ef;border-radius:0;background:#edf2f8;padding:24px 28px}
+.adoption-page .guide-outcome>span{display:flex;align-items:center;gap:8px;font-size:11px;color:#7b8ba0;margin-bottom:10px}
+.adoption-page .guide-outcome svg{width:17px;height:17px;fill:none;stroke:#8397b2;stroke-width:1.3;stroke-linejoin:round}
+.adoption-page .guide-outcome>strong{font-size:17px;line-height:1.6;font-weight:600;letter-spacing:-.025em;color:#334a68}
+.adoption-page .guide-map{border-radius:18px;border-color:#3a424e;background:#171c23;box-shadow:0 24px 60px #0003}
+.adoption-page .guide-map li>small{font-size:12px;color:#98a7ba}
+.adoption-page .guide-map li>span{border-radius:12px}
+.adoption-page .guide-map figcaption{font-size:11px;color:#8f9caf}
+
+@media(hover:hover){.adoption-page .prepare-card:hover{border-color:#b7c4d5;box-shadow:0 10px 30px #2844680a}}
+@media(max-width:1100px){
+ .scenarios-page .use-entry h2{font-size:27px}
+ .adoption-page .guide-prepare ol{gap:16px}
+ .adoption-page .guide-prepare .prepare-card{padding:22px}
+ .adoption-page .guide-prepare h3{font-size:19px}
+ .adoption-page .prepare-preview{padding:15px}
+ .adoption-page .prepare-priority>div{grid-template-columns:5px 1fr}
+ .adoption-page .prepare-priority b{display:none}
+}
+@media(max-width:834px){
+ .scenarios-page .use-index{gap:16px;padding-block:40px 64px}
+ .scenarios-page .use-entry,.scenarios-page .use-entry:first-child,.scenarios-page .use-entry:last-child{padding:22px;border-radius:16px}
+ .scenarios-page .use-entry h2{font-size:24px;line-height:1.45;margin-top:20px}
+ .scenarios-page .use-entry-description{font-size:13px;margin-bottom:22px}
+ .scenarios-page .use-entry-preview{padding:16px;min-height:220px}
+ .scenarios-page .card-allocation{gap:8px;grid-template-columns:1fr 12px 1fr}
+ .scenarios-page .card-request{padding:10px}
+ .scenarios-page .card-chip-array{gap:5px}
+ .scenarios-page .card-chip-array i{height:24px}
+ .scenarios-page .card-context{gap:4px}
+ .scenarios-page .card-review{gap:5px}
+ .scenarios-page .card-review>div{padding:12px 6px}
+ .scenarios-page .use-entry-footer{font-size:12px}
+ .scenarios-page .use-diagram{padding:22px}
+ .scenarios-page .use-check{padding:22px}
+ .adoption-page .guide-prepare>div{display:block}
+ .adoption-page .guide-prepare h2{margin-bottom:22px}
+ .adoption-page .guide-prepare ol{grid-template-columns:1fr;gap:16px}
+ .adoption-page .guide-prepare .prepare-card{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding:26px}
+ .adoption-page .guide-prepare .prepare-number{grid-column:1;margin-bottom:20px}
+ .adoption-page .prepare-card>div:not(.prepare-preview){grid-column:1;margin-bottom:0}
+ .adoption-page .guide-prepare li p{min-height:0;font-size:14px}
+ .adoption-page .prepare-preview{grid-column:2;grid-row:1/3;margin:0;align-self:center;width:100%;min-height:156px;padding:18px}
+ .adoption-page .guide-review-header{padding:20px 24px}
+ .adoption-page .guide-stage dl{padding-inline:24px}
+ .adoption-page .guide-stage dl>div{grid-template-columns:75px 1fr;gap:18px}
+ .adoption-page .guide-outcome{padding:22px 24px}
+}
+@media(max-width:600px){
+ .scenarios-page .use-index{grid-template-columns:1fr;gap:20px}
+ .scenarios-page .use-entry h2{font-size:27px}
+ .scenarios-page .use-entry-description{font-size:14px;max-width:330px}
+ .scenarios-page .use-entry-preview{min-height:225px;padding:18px 20px}
+ .scenarios-page .use-entry-meta{font-size:12px}
+ .scenarios-page .use-entry-products,.scenarios-page .use-entry-products b{font-size:11px}
+ .scenarios-page .use-entry-footer{font-size:13px}
+ .scenarios-page .card-allocation{gap:12px;grid-template-columns:1fr 20px 1fr}
+ .scenarios-page .card-chip-array i{height:30px}
+ .scenarios-page .card-review>div{padding:14px 8px}
+ .scenarios-page .use-demo-identity{gap:6px;font-size:11px}
+ .scenarios-page .use-demo-identity small{padding-left:7px;margin-left:0;font-size:10px}
+ .scenarios-page .use-diagram-top{font-size:10px;gap:8px}
+ .scenarios-page .use-diagram figcaption{padding:18px;min-height:140px}
+ .scenarios-page .use-diagram figcaption p{font-size:12px}
+ .adoption-page .guide-prepare .prepare-card{display:flex;padding:24px}
+ .adoption-page .guide-prepare h3{font-size:21px}
+ .adoption-page .guide-prepare .prepare-number{margin-bottom:22px}
+ .adoption-page .guide-prepare .prepare-preview{margin-top:24px;min-height:152px;padding:22px}
+ .adoption-page .prepare-priority>div{grid-template-columns:5px 1fr auto}
+ .adoption-page .prepare-priority b{display:block}
+}
+@media(max-width:370px){
+ .scenarios-page .use-entry,.scenarios-page .use-entry:first-child,.scenarios-page .use-entry:last-child{padding:18px}
+ .scenarios-page .use-entry h2{font-size:24px}
+ .scenarios-page .use-entry-preview{padding:16px 14px}
+ .scenarios-page .card-request{padding:10px 8px}
+ .scenarios-page .card-request b{font-size:13px;white-space:nowrap}
+ .scenarios-page .card-request small{font-size:9px}
+ .scenarios-page .card-chip-array i{height:24px}
+ .scenarios-page .card-review{gap:4px}
+ .scenarios-page .card-review>div{padding:12px 4px}
+ .scenarios-page .card-review b{font-size:11px}
+ .scenarios-page .card-review span{font-size:9px}
+ .scenarios-page .use-diagram{padding:18px}
+ .scenarios-page .use-demo-identity small{display:none}
+ .adoption-page .guide-stage dl>div{grid-template-columns:1fr;gap:8px;padding-block:20px}
+ .adoption-page .guide-outcome>strong{font-size:16px}
+ .adoption-page .guide-map figcaption{flex-direction:column;gap:4px}
+}
+@media(prefers-reduced-motion:reduce){
+ .scenarios-page .use-entry,.scenarios-page .use-entry *,.adoption-page .prepare-card{transition:none!important;transform:none!important}
+}
